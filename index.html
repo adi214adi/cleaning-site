@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Cleanex Batumi — Клининговая компания</title>
   <meta name="description" content="Cleanex Batumi — профессиональная уборка квартир и офисов в Батуми. Стандартная и генеральная уборка. Калькулятор цены. RU/EN/KA." />
+
   <style>
     :root{
       --bg:#0b1220;
@@ -23,6 +24,12 @@
       --radius2: 24px;
       --max: 1120px;
       --headerH: 72px;
+      --ok:#28e07a;
+      --danger:#ff5a73;
+
+      /* UX surface layer for sections (fix glass conflict) */
+      --surface: rgba(7,13,24,.62);
+      --surface2: rgba(7,13,24,.72);
     }
 
     *{ box-sizing:border-box; }
@@ -40,8 +47,30 @@
 
     a{ color:inherit; text-decoration:none; }
     img{ max-width:100%; display:block; }
-
     .container{ width:100%; max-width:var(--max); margin:0 auto; padding:0 18px; }
+
+    /* Section surface wrapper (key UX fix) */
+    section{
+      position:relative;
+      padding:48px 0;
+    }
+    section:before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background: linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.01));
+      pointer-events:none;
+      z-index:0;
+    }
+    .section-surface{
+      position:relative;
+      z-index:1;
+      padding:18px;
+      border-radius: var(--radius2);
+      background: linear-gradient(180deg, var(--surface), var(--surface2));
+      border:1px solid rgba(255,255,255,.08);
+      box-shadow: 0 18px 70px rgba(0,0,0,.28);
+    }
 
     /* Header */
     header{
@@ -117,7 +146,7 @@
       border:0; background:transparent; color:var(--muted);
       padding:8px 10px;
       border-radius:999px;
-      font-weight:700;
+      font-weight:800;
       font-size:12px;
       letter-spacing:.3px;
       cursor:pointer;
@@ -140,7 +169,7 @@
       border:1px solid rgba(255,255,255,.14);
       background: rgba(255,255,255,.06);
       color:var(--text);
-      font-weight:700;
+      font-weight:800;
       cursor:pointer;
       transition:.18s ease;
       user-select:none;
@@ -154,12 +183,24 @@
       box-shadow: 0 18px 50px rgba(79,179,255,.18);
     }
     .btn-primary:hover{ transform: translateY(-1px); filter:saturate(1.05); }
-    .btn-ghost{
-      background: rgba(255,255,255,.05);
-    }
+    .btn-ghost{ background: rgba(255,255,255,.05); }
 
-    /* Sections */
-    section{ padding:48px 0; }
+    /* Branded messenger buttons (UX fix) */
+    .btn-wa{
+      border:0;
+      background: linear-gradient(135deg, rgba(37,211,102,1), rgba(45,224,197,.9));
+      color:#061020;
+      box-shadow: 0 18px 50px rgba(37,211,102,.12);
+    }
+    .btn-tg{
+      border:0;
+      background: linear-gradient(135deg, rgba(42,171,238,1), rgba(79,179,255,1));
+      color:#061020;
+      box-shadow: 0 18px 50px rgba(42,171,238,.12);
+    }
+    .btn-icon svg{ width:18px; height:18px; display:block; }
+
+    /* Titles */
     .section-title{
       display:flex; align-items:flex-end; justify-content:space-between; gap:14px;
       margin-bottom:16px;
@@ -178,9 +219,7 @@
     }
 
     /* Hero */
-    .hero{
-      padding-top:28px;
-    }
+    .hero{ padding-top:28px; }
     .hero-wrap{
       display:grid;
       grid-template-columns: 1.15fr .85fr;
@@ -188,8 +227,8 @@
       align-items:stretch;
     }
     .hero-left{
-      background: rgba(255,255,255,.04);
-      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.05);
+      border:1px solid rgba(255,255,255,.12);
       border-radius: var(--radius2);
       box-shadow: var(--shadow);
       padding:22px;
@@ -199,7 +238,7 @@
     .hero-left:before{
       content:"";
       position:absolute; inset:-2px;
-      background: radial-gradient(600px 300px at 20% 20%, rgba(79,179,255,.20), transparent 60%),
+      background: radial-gradient(600px 300px at 20% 20%, rgba(79,179,255,.18), transparent 60%),
                   radial-gradient(500px 260px at 80% 30%, rgba(45,224,197,.14), transparent 55%);
       pointer-events:none;
     }
@@ -211,17 +250,17 @@
     .badge{
       font-size:12px;
       color: rgba(7,13,24,.95);
-      font-weight:800;
+      font-weight:900;
       padding:8px 10px;
       border-radius:999px;
-      background: rgba(255,255,255,.86);
+      background: rgba(255,255,255,.88);
       border:1px solid rgba(255,255,255,.9);
     }
     .badge.alt{
       background: rgba(255,255,255,.10);
       color: var(--text);
-      border:1px solid rgba(255,255,255,.16);
-      font-weight:700;
+      border:1px solid rgba(255,255,255,.18);
+      font-weight:800;
     }
     .hero h1{
       margin:0 0 10px;
@@ -253,7 +292,6 @@
     .hero-right img{
       width:100%; height:100%;
       object-fit:cover;
-      /* важное: лицо НЕ перекрывается, смещаем фокус */
       object-position: 60% 30%;
       filter: saturate(1.02) contrast(1.02);
       transform: scale(1.02);
@@ -280,38 +318,39 @@
     .mini span{ display:block; font-size:12px; color:var(--muted); margin-top:4px; }
 
     /* Cards / grids */
-    .grid{
-      display:grid;
-      gap:14px;
-    }
+    .grid{ display:grid; gap:14px; }
     .grid.cols-4{ grid-template-columns: repeat(4, 1fr); }
     .grid.cols-3{ grid-template-columns: repeat(3, 1fr); }
     .grid.cols-2{ grid-template-columns: repeat(2, 1fr); }
 
     .card{
-      background: rgba(255,255,255,.04);
-      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.05);
+      border:1px solid rgba(255,255,255,.12);
       border-radius: var(--radius);
       box-shadow: 0 14px 45px rgba(0,0,0,.22);
       overflow:hidden;
     }
     .card .card-body{ padding:14px; }
     .card .card-title{
-      display:flex; align-items:center; justify-content:space-between; gap:10px;
+      display:flex; align-items:flex-start; justify-content:space-between; gap:10px;
       margin:0 0 8px;
+      flex-wrap:wrap;
     }
     .card .card-title h3{
       margin:0; font-size:16px;
+      line-height:1.2;
+      max-width: calc(100% - 120px);
     }
     .price{
-      font-weight:900;
+      font-weight:950;
       letter-spacing:.3px;
-      font-size:14px;
+      font-size:13px;
       padding:7px 10px;
       border-radius:999px;
       background: rgba(255,255,255,.10);
       border:1px solid rgba(255,255,255,.16);
       white-space:nowrap;
+      flex:0 0 auto;
     }
     .card p{
       margin:0 0 12px;
@@ -359,12 +398,13 @@
       align-items:start;
     }
     .calc-left, .calc-right{
-      background: rgba(255,255,255,.04);
-      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.05);
+      border:1px solid rgba(255,255,255,.12);
       border-radius: var(--radius2);
       box-shadow: var(--shadow);
       padding:16px;
     }
+
     .tabs{
       display:flex; gap:8px;
       background: rgba(255,255,255,.06);
@@ -381,7 +421,7 @@
       border-radius:999px;
       background:transparent;
       color:var(--muted);
-      font-weight:800;
+      font-weight:900;
       font-size:12px;
       transition:.18s ease;
       white-space:nowrap;
@@ -390,33 +430,36 @@
       color:#061020;
       background: linear-gradient(135deg, rgba(79,179,255,1), rgba(45,224,197,1));
     }
+
     .form-row{
       display:grid;
       grid-template-columns: 1fr 1fr;
       gap:10px;
       margin-top:12px;
     }
-    .field{
-      display:flex; flex-direction:column; gap:6px;
-    }
+    .field{ display:flex; flex-direction:column; gap:6px; }
     .field label{
       font-size:12px;
       color:var(--muted2);
-      font-weight:700;
+      font-weight:800;
       letter-spacing:.25px;
     }
-    .field select{
+    .field select, .field input, .field textarea{
       width:100%;
       padding:12px 12px;
       border-radius:14px;
       background: rgba(255,255,255,.06);
       border:1px solid rgba(255,255,255,.14);
       color:var(--text);
-      font-weight:700;
+      font-weight:750;
       outline:none;
       appearance:none;
     }
-    .field select:focus{ border-color:rgba(79,179,255,.45); box-shadow:0 0 0 4px rgba(79,179,255,.14); }
+    .field textarea{ min-height:86px; resize:vertical; }
+    .field select:focus, .field input:focus, .field textarea:focus{
+      border-color:rgba(79,179,255,.45);
+      box-shadow:0 0 0 4px rgba(79,179,255,.14);
+    }
 
     .options{
       margin-top:12px;
@@ -439,11 +482,7 @@
     .opt b{ font-size:13px; display:block; }
     .opt span{ font-size:12px; color:var(--muted); display:block; margin-top:3px; }
 
-    .calc-result{
-      display:flex;
-      flex-direction:column;
-      gap:10px;
-    }
+    .calc-result{ display:flex; flex-direction:column; gap:12px; }
     .result-box{
       padding:14px;
       border-radius:18px;
@@ -457,17 +496,8 @@
     .result-box .row{
       display:flex; align-items:flex-start; justify-content:space-between; gap:10px;
     }
-    .result-box h3{
-      margin:0;
-      font-size:16px;
-      letter-spacing:.2px;
-    }
-    .result-box p{
-      margin:6px 0 0;
-      font-size:12px;
-      color:var(--muted);
-      line-height:1.35;
-    }
+    .result-box h3{ margin:0; font-size:16px; letter-spacing:.2px; }
+    .result-box p{ margin:6px 0 0; font-size:12px; color:var(--muted); line-height:1.35; }
     .result-price{
       font-size:26px;
       font-weight:1000;
@@ -475,22 +505,31 @@
       white-space:nowrap;
       color:#ffffff;
     }
-    .small-note{
-      font-size:12px;
-      color:var(--muted2);
-      line-height:1.35;
-    }
-    .divider{
-      height:1px; background: rgba(255,255,255,.10);
-      margin:10px 0;
-    }
+    .small-note{ font-size:12px; color:var(--muted2); line-height:1.35; }
+    .divider{ height:1px; background: rgba(255,255,255,.10); margin:10px 0; }
 
-    /* "What's included" room visual section */
+    /* Lead */
+    .lead-box{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:10px;
+      margin-top:10px;
+    }
+    .lead-actions{
+      display:grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap:10px;
+      margin-top:10px;
+    }
+    .lead-actions .btn{ width:100%; }
+    .btn-full{ width:100%; }
+
+    /* Rooms */
     .room-visual{
       padding:12px;
       border-radius: var(--radius2);
-      background: rgba(255,255,255,.04);
-      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.05);
+      border:1px solid rgba(255,255,255,.12);
       box-shadow: var(--shadow);
       overflow:hidden;
     }
@@ -499,11 +538,7 @@
       margin:2px 2px 10px;
       flex-wrap:wrap;
     }
-    .room-top h3{
-      margin:0;
-      font-size:16px;
-      letter-spacing:.2px;
-    }
+    .room-top h3{ margin:0; font-size:16px; letter-spacing:.2px; }
     .room-switch{
       display:flex;
       gap:8px;
@@ -519,7 +554,7 @@
       border-radius:999px;
       background:transparent;
       color:var(--muted);
-      font-weight:900;
+      font-weight:950;
       font-size:12px;
       transition:.18s ease;
     }
@@ -554,17 +589,42 @@
       display:flex; align-items:center; gap:8px;
       padding:10px 12px;
       border-radius:999px;
-      background: rgba(255,255,255,.90);
+      background: rgba(255,255,255,.92);
       border:1px solid rgba(255,255,255,.95);
       color:#0a0f1c;
-      font-weight:800;
+      font-weight:900;
       font-size:12px;
       box-shadow: 0 14px 40px rgba(0,0,0,.20);
-      max-width: 70%;
+      max-width: 72%;
     }
     .bubble .b-dot{
       width:10px; height:10px; border-radius:99px;
       background: linear-gradient(135deg, var(--accent), var(--accent2));
+      flex:0 0 auto;
+    }
+
+    .room-list{
+      margin-top:12px;
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:10px;
+    }
+    .room-item{
+      padding:12px;
+      border-radius:16px;
+      background: rgba(255,255,255,.05);
+      border:1px solid rgba(255,255,255,.12);
+      color:var(--text);
+      font-size:12px;
+      line-height:1.35;
+      display:flex;
+      gap:10px;
+      align-items:flex-start;
+    }
+    .room-item .b-dot{
+      width:10px; height:10px; border-radius:99px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      margin-top:4px;
       flex:0 0 auto;
     }
 
@@ -574,8 +634,8 @@
       background:
         radial-gradient(850px 360px at 20% 0%, rgba(79,179,255,.18), transparent 55%),
         radial-gradient(700px 340px at 90% 30%, rgba(45,224,197,.14), transparent 55%),
-        rgba(255,255,255,.04);
-      border:1px solid rgba(255,255,255,.10);
+        rgba(255,255,255,.05);
+      border:1px solid rgba(255,255,255,.12);
       box-shadow: var(--shadow);
       padding:18px;
       display:grid;
@@ -600,6 +660,53 @@
       font-size:12px;
     }
 
+    /* Toast */
+    .toast{
+      position:fixed;
+      left:50%;
+      bottom:22px;
+      transform:translateX(-50%);
+      background: rgba(7,13,24,.92);
+      border:1px solid rgba(255,255,255,.14);
+      backdrop-filter: blur(10px);
+      color:var(--text);
+      padding:12px 14px;
+      border-radius:14px;
+      box-shadow: 0 22px 70px rgba(0,0,0,.45);
+      max-width:min(560px, calc(100% - 24px));
+      display:none;
+      z-index:999;
+      font-size:13px;
+      line-height:1.35;
+    }
+    .toast.show{ display:block; animation: pop .22s ease; }
+    .toast.ok{ border-color: rgba(40,224,122,.35); }
+    .toast.bad{ border-color: rgba(255,90,115,.45); }
+    @keyframes pop{ from{ transform:translateX(-50%) translateY(6px); opacity:0; } to{ transform:translateX(-50%) translateY(0); opacity:1; } }
+
+    /* Sticky mobile action bar */
+    .mobile-sticky{
+      position:fixed;
+      left:12px;
+      right:12px;
+      bottom:12px;
+      display:none;
+      gap:10px;
+      z-index:1000;
+      padding:10px;
+      border-radius:18px;
+      background: rgba(7,13,24,.78);
+      border:1px solid rgba(255,255,255,.12);
+      backdrop-filter: blur(12px);
+      box-shadow: 0 18px 60px rgba(0,0,0,.40);
+    }
+    .mobile-sticky .btn{
+      flex:1;
+      padding:13px 12px;
+      border-radius:16px;
+      font-weight:950;
+    }
+
     /* Responsive */
     @media (max-width: 980px){
       .hero-wrap{ grid-template-columns: 1fr; }
@@ -611,12 +718,59 @@
       .cta{ grid-template-columns: 1fr; }
       .cta-actions{ justify-content:flex-start; }
       .hero h1{ font-size:34px; }
+      .section-surface{ padding:14px; }
     }
+
+    @media (max-width: 720px){
+      .lead-box{ grid-template-columns: 1fr; }
+      .room-list{ grid-template-columns: 1fr; }
+      .lead-actions{ grid-template-columns: 1fr; }
+    }
+
     @media (max-width: 520px){
+      :root{ --headerH: 64px; }
+      .container{ padding:0 14px; }
       .grid.cols-4{ grid-template-columns: 1fr; }
       .hero h1{ font-size:30px; }
-      .phone-pill .phone-text b{ font-size:13px; }
-      .bubble{ max-width: 88%; font-size:11px; }
+
+      .brand{ min-width:auto; }
+      .phone-pill{ padding:8px 10px; gap:8px; }
+      .phone-pill .phone-text small{ display:none; }
+      .phone-pill .phone-text b{ font-size:13px; letter-spacing:.2px; }
+
+      .lang{ padding:5px; }
+      .lang button{ min-width:40px; padding:8px 9px; font-size:12px; }
+
+      .room-top{ flex-direction:column; align-items:flex-start; gap:10px; }
+      .room-switch{
+        width:100%;
+        overflow-x:auto;
+        flex-wrap:nowrap;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width:none;
+      }
+      .room-switch::-webkit-scrollbar{ display:none; }
+      .room-switch button{ flex:0 0 auto; }
+
+      .tabs{ width:100%; justify-content:flex-start; }
+      .room-image{ min-height: 220px; }
+      .bubble{ max-width: 88%; font-size:11px; padding:8px 10px; }
+
+      #extras .grid.cols-3{
+        display:grid;
+        grid-auto-flow: column;
+        grid-auto-columns: 82%;
+        overflow-x:auto;
+        gap:14px;
+        padding-bottom:8px;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width:none;
+      }
+      #extras .grid.cols-3::-webkit-scrollbar{ display:none; }
+
+      /* show mobile sticky bar */
+      .mobile-sticky{ display:flex; }
+      body{ padding-bottom: 86px; } /* space for sticky bar */
     }
   </style>
 </head>
@@ -656,49 +810,49 @@
   <!-- HERO -->
   <section class="hero">
     <div class="container">
-      <div class="hero-wrap">
-        <!-- LEFT: текст (чтобы НЕ перекрывать лицо на фото) -->
-        <div class="hero-left">
-          <div class="hero-content">
-            <div class="hero-badges">
-              <span class="badge" data-i18n="hero.badge1">Квартиры и офисы</span>
-              <span class="badge alt" data-i18n="hero.badge2">Батуми • 7 дней в неделю</span>
-              <span class="badge alt" data-i18n="hero.badge3">Оплата наличными / переводом</span>
-            </div>
+      <div class="section-surface">
+        <div class="hero-wrap">
+          <div class="hero-left">
+            <div class="hero-content">
+              <div class="hero-badges">
+                <span class="badge" data-i18n="hero.badge1">Квартиры и офисы</span>
+                <span class="badge alt" data-i18n="hero.badge2">Батуми • 7 дней в неделю</span>
+                <span class="badge alt" data-i18n="hero.badge3">Оплата наличными / переводом</span>
+              </div>
 
-            <h1 data-i18n="hero.title">Уборка, после которой приятно жить</h1>
-            <p data-i18n="hero.desc">
-              Стандартная и генеральная уборка квартир, офисов и помещений. Прозрачная цена, чек-лист по комнатам и доп. услуги: окна, балкон, духовка, микроволновка и другое.
-            </p>
+              <h1 data-i18n="hero.title">Уборка, после которой приятно жить</h1>
+              <p data-i18n="hero.desc">
+                Стандартная и генеральная уборка квартир, офисов и помещений. Прозрачная цена, чек-лист по комнатам и доп. услуги: окна, балкон, духовка, микроволновка и другое.
+              </p>
 
-            <div class="hero-actions">
-              <a href="#calculator" class="btn btn-primary" data-i18n="hero.cta1">Рассчитать цену</a>
-              <a href="#packages" class="btn btn-ghost" data-i18n="hero.cta2">Посмотреть пакеты</a>
-            </div>
+              <div class="hero-actions">
+                <a href="#calculator" class="btn btn-primary" data-i18n="hero.cta1">Рассчитать цену</a>
+                <a href="#packages" class="btn btn-ghost" data-i18n="hero.cta2">Посмотреть пакеты</a>
+              </div>
 
-            <div class="pill-row" style="margin-top:14px;">
-              <span class="pill" data-i18n="hero.pill1">Собственный инвентарь</span>
-              <span class="pill" data-i18n="hero.pill2">Аккуратно и без запаха химии</span>
-              <span class="pill" data-i18n="hero.pill3">Подходит для семей с детьми</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- RIGHT: фото hero -->
-        <div class="hero-right">
-          <img src="hero.jpg" alt="Cleaning service hero image" />
-          <div class="hero-mini">
-            <div class="mini">
-              <b data-i18n="hero.m1t">Быстрый выезд</b>
-              <span data-i18n="hero.m1d">Обычно в тот же день или на завтра</span>
-            </div>
-            <div class="mini">
-              <b data-i18n="hero.m2t">Честная цена</b>
-              <span data-i18n="hero.m2d">Счёт в калькуляторе до заказа</span>
+              <div class="pill-row" style="margin-top:14px;">
+                <span class="pill" data-i18n="hero.pill1">Собственный инвентарь</span>
+                <span class="pill" data-i18n="hero.pill2">Аккуратно и без запаха химии</span>
+                <span class="pill" data-i18n="hero.pill3">Подходит для семей с детьми</span>
+              </div>
             </div>
           </div>
-        </div>
 
+          <div class="hero-right">
+            <img src="hero.jpg" alt="Cleaning service hero image" />
+            <div class="hero-mini">
+              <div class="mini">
+                <b data-i18n="hero.m1t">Быстрый выезд</b>
+                <span data-i18n="hero.m1d">Обычно в тот же день или на завтра</span>
+              </div>
+              <div class="mini">
+                <b data-i18n="hero.m2t">Честная цена</b>
+                <span data-i18n="hero.m2d">Счёт в калькуляторе до заказа</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
       </div>
     </div>
   </section>
@@ -706,99 +860,89 @@
   <!-- PACKAGES -->
   <section id="packages">
     <div class="container">
-      <div class="section-title">
-        <div>
-          <h2 data-i18n="packages.title">Пакеты уборки</h2>
-          <p data-i18n="packages.desc">
-            Рыночные цены по Батуми (GEL). Итог зависит от состояния и выбранных доп. услуг — всё прозрачно в калькуляторе.
-          </p>
-        </div>
-      </div>
-
-      <div class="grid cols-4">
-        <div class="card">
-          <div class="media">
-            <img src="1.jpg" alt="Studio cleaning" />
-          </div>
-          <div class="card-body">
-            <div class="card-title">
-              <h3 data-i18n="packages.studio">Студия</h3>
-              <span class="price"><span data-i18n="from">от</span> 90 GEL</span>
-            </div>
-            <p data-i18n="packages.studioDesc">Базовая чистота, санузел, кухня, полы, поверхности, вынос мусора.</p>
-            <a class="btn btn-primary" href="#calculator" data-i18n="packages.calc">Рассчитать</a>
+      <div class="section-surface">
+        <div class="section-title">
+          <div>
+            <h2 data-i18n="packages.title">Пакеты уборки</h2>
+            <p data-i18n="packages.desc">
+              Рыночные цены по Батуми (GEL). Итог зависит от состояния и выбранных доп. услуг — всё прозрачно в калькуляторе.
+            </p>
           </div>
         </div>
 
-        <div class="card">
-          <div class="media">
-            <img src="1+1.jpg" alt="1+1 apartment cleaning" />
-          </div>
-          <div class="card-body">
-            <div class="card-title">
-              <h3 data-i18n="packages.a11">Квартира 1+1</h3>
-              <span class="price"><span data-i18n="from">от</span> 120 GEL</span>
+        <div class="grid cols-4">
+          <div class="card">
+            <div class="media"><img src="1.jpg" alt="Studio cleaning" /></div>
+            <div class="card-body">
+              <div class="card-title">
+                <h3 data-i18n="packages.studio">Студия</h3>
+                <span class="price"><span data-i18n="from">от</span> 90 GEL</span>
+              </div>
+              <p data-i18n="packages.studioDesc">Базовая чистота, санузел, кухня, полы, поверхности, вынос мусора.</p>
+              <a class="btn btn-primary btn-full" href="#calculator" data-i18n="packages.calc">Рассчитать</a>
             </div>
-            <p data-i18n="packages.a11Desc">Спальня + гостиная/кухня, санузел, пыль/поверхности, полы.</p>
-            <a class="btn btn-primary" href="#calculator" data-i18n="packages.calc">Рассчитать</a>
+          </div>
+
+          <div class="card">
+            <div class="media"><img src="1+1.jpg" alt="1+1 apartment cleaning" /></div>
+            <div class="card-body">
+              <div class="card-title">
+                <h3 data-i18n="packages.a11">Квартира 1+1</h3>
+                <span class="price"><span data-i18n="from">от</span> 120 GEL</span>
+              </div>
+              <p data-i18n="packages.a11Desc">Спальня + гостиная/кухня, санузел, пыль/поверхности, полы.</p>
+              <a class="btn btn-primary btn-full" href="#calculator" data-i18n="packages.calc">Рассчитать</a>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="media"><img src="2+1+WC.jpg" alt="2+1+WC apartment cleaning" /></div>
+            <div class="card-body">
+              <div class="card-title">
+                <h3 data-i18n="packages.a21wc">Квартира 2+1 + WC</h3>
+                <span class="price"><span data-i18n="from">от</span> 160 GEL</span>
+              </div>
+              <p data-i18n="packages.a21wcDesc">2 спальни + гостиная/кухня, 1 санузел. Идеально для регулярной уборки.</p>
+              <a class="btn btn-primary btn-full" href="#calculator" data-i18n="packages.calc">Рассчитать</a>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="media"><img src="3+1+1WC.jpg" alt="3+1+1WC apartment cleaning" /></div>
+            <div class="card-body">
+              <div class="card-title">
+                <h3 data-i18n="packages.a311wc">Квартира 3+1 + 1 WC</h3>
+                <span class="price"><span data-i18n="from">от</span> 200 GEL</span>
+              </div>
+              <p data-i18n="packages.a311wcDesc">Большая квартира: больше поверхностей и времени — лучше считать точно.</p>
+              <a class="btn btn-primary btn-full" href="#calculator" data-i18n="packages.calc">Рассчитать</a>
+            </div>
           </div>
         </div>
 
-        <div class="card">
-          <div class="media">
-            <img src="2+1+WC.jpg" alt="2+1+WC apartment cleaning" />
-          </div>
-          <div class="card-body">
-            <div class="card-title">
-              <h3 data-i18n="packages.a21wc">Квартира 2+1 + WC</h3>
-              <span class="price"><span data-i18n="from">от</span> 160 GEL</span>
+        <div class="grid cols-2" style="margin-top:14px;">
+          <div class="card">
+            <div class="media"><img src="office-cleaning-service.jpg" alt="Office cleaning" /></div>
+            <div class="card-body">
+              <div class="card-title">
+                <h3 data-i18n="packages.office">Клининг офисов</h3>
+                <span class="price"><span data-i18n="from">от</span> 2.5 GEL/м²</span>
+              </div>
+              <p data-i18n="packages.officeDesc">Поддерживающая и генеральная уборка офисов, кабинетов, клиник. Расчёт по площади.</p>
+              <a class="btn btn-primary btn-full" href="#calculator" data-i18n="packages.calc">Рассчитать</a>
             </div>
-            <p data-i18n="packages.a21wcDesc">2 спальни + гостиная/кухня, 1 санузел. Идеально для регулярной уборки.</p>
-            <a class="btn btn-primary" href="#calculator" data-i18n="packages.calc">Рассчитать</a>
           </div>
-        </div>
 
-        <div class="card">
-          <div class="media">
-            <img src="3+1+1WC.jpg" alt="3+1+1WC apartment cleaning" />
-          </div>
-          <div class="card-body">
-            <div class="card-title">
-              <h3 data-i18n="packages.a311wc">Квартира 3+1 + 1 WC</h3>
-              <span class="price"><span data-i18n="from">от</span> 200 GEL</span>
+          <div class="card">
+            <div class="media"><img src="post-renovation-cleaning.jpg" alt="Post renovation cleaning" /></div>
+            <div class="card-body">
+              <div class="card-title">
+                <h3 data-i18n="packages.postreno">Уборка после ремонта</h3>
+                <span class="price"><span data-i18n="from">от</span> 3.5 GEL/м²</span>
+              </div>
+              <p data-i18n="packages.postrenoDesc">Пыль после ремонта, следы строительных работ, тщательная детализация.</p>
+              <a class="btn btn-primary btn-full" href="#calculator" data-i18n="packages.calc">Рассчитать</a>
             </div>
-            <p data-i18n="packages.a311wcDesc">Большая квартира: больше поверхностей и времени — лучше считать точно.</p>
-            <a class="btn btn-primary" href="#calculator" data-i18n="packages.calc">Рассчитать</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="grid cols-2" style="margin-top:14px;">
-        <div class="card">
-          <div class="media">
-            <img src="office-cleaning-service.jpg" alt="Office cleaning" />
-          </div>
-          <div class="card-body">
-            <div class="card-title">
-              <h3 data-i18n="packages.office">Клининг офисов</h3>
-              <span class="price"><span data-i18n="from">от</span> 2.5 GEL/м²</span>
-            </div>
-            <p data-i18n="packages.officeDesc">Поддерживающая и генеральная уборка офисов, кабинетов, клиник. Расчёт по площади.</p>
-            <a class="btn btn-primary" href="#calculator" data-i18n="packages.calc">Рассчитать</a>
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="media">
-            <img src="post-renovation-cleaning.jpg" alt="Post renovation cleaning" />
-          </div>
-          <div class="card-body">
-            <div class="card-title">
-              <h3 data-i18n="packages.postreno">Уборка после ремонта</h3>
-              <span class="price"><span data-i18n="from">от</span> 3.5 GEL/м²</span>
-            </div>
-            <p data-i18n="packages.postrenoDesc">Пыль после ремонта, следы строительных работ, тщательная детализация.</p>
-            <a class="btn btn-primary" href="#calculator" data-i18n="packages.calc">Рассчитать</a>
           </div>
         </div>
       </div>
@@ -808,34 +952,35 @@
   <!-- VISUAL CHECKLIST (ROOMS) -->
   <section id="included">
     <div class="container">
-      <div class="section-title">
-        <div>
-          <h2 data-i18n="included.title">Что входит в уборку</h2>
-          <p data-i18n="included.desc">
-            Визуальный чек-лист по комнатам. Переключайте комнаты и тип уборки (стандартная / генеральная).
-          </p>
-        </div>
-      </div>
-
-      <div class="room-visual">
-        <div class="room-top">
-          <h3 data-i18n="included.roomTitle">Комната</h3>
-
-          <div class="tabs" aria-label="Cleaning type tabs">
-            <button type="button" class="active" data-cleaning-type="standard" data-i18n="calc.standard">Стандартная</button>
-            <button type="button" data-cleaning-type="deep" data-i18n="calc.deep">Генеральная</button>
-          </div>
-
-          <div class="room-switch" aria-label="Room tabs">
-            <button type="button" class="active" data-room="bedroom" data-i18n="rooms.bedroom">Спальня</button>
-            <button type="button" data-room="bathroom" data-i18n="rooms.bathroom">Ванная</button>
-            <button type="button" data-room="kitchen" data-i18n="rooms.kitchen">Кухня</button>
-            <button type="button" data-room="hallway" data-i18n="rooms.hallway">Прихожая</button>
+      <div class="section-surface">
+        <div class="section-title">
+          <div>
+            <h2 data-i18n="included.title">Что входит в уборку</h2>
+            <p data-i18n="included.desc">
+              Визуальный чек-лист по комнатам. Переключайте комнаты и тип уборки (стандартная / генеральная).
+            </p>
           </div>
         </div>
 
-        <div class="room-image" id="roomImage">
-          <!-- image injected by JS -->
+        <div class="room-visual">
+          <div class="room-top">
+            <h3 data-i18n="included.roomTitle">Комната</h3>
+
+            <div class="tabs" aria-label="Cleaning type tabs">
+              <button type="button" class="active" data-cleaning-type="standard" data-i18n="calc.standard">Стандартная</button>
+              <button type="button" data-cleaning-type="deep" data-i18n="calc.deep">Генеральная</button>
+            </div>
+
+            <div class="room-switch" aria-label="Room tabs">
+              <button type="button" class="active" data-room="bedroom" data-i18n="rooms.bedroom">Спальня</button>
+              <button type="button" data-room="bathroom" data-i18n="rooms.bathroom">Ванная</button>
+              <button type="button" data-room="kitchen" data-i18n="rooms.kitchen">Кухня</button>
+              <button type="button" data-room="hallway" data-i18n="rooms.hallway">Прихожая</button>
+            </div>
+          </div>
+
+          <div class="room-image" id="roomImage"></div>
+          <div class="room-list" id="roomList"></div>
         </div>
       </div>
     </div>
@@ -844,114 +989,160 @@
   <!-- CALCULATOR -->
   <section id="calculator">
     <div class="container">
-      <div class="section-title">
-        <div>
-          <h2 data-i18n="calc.title">Калькулятор цены</h2>
-          <p data-i18n="calc.desc">Выберите тип уборки, объект и доп. услуги. Цена считается автоматически (GEL).</p>
-        </div>
-      </div>
-
-      <div class="calc">
-        <div class="calc-left">
-          <div class="tabs" aria-label="Calculator tabs">
-            <button type="button" class="active" data-calc-type="standard" data-i18n="calc.standard">Стандартная</button>
-            <button type="button" data-calc-type="deep" data-i18n="calc.deep">Генеральная</button>
-          </div>
-
-          <div class="form-row">
-            <div class="field">
-              <label data-i18n="calc.object">Объект</label>
-              <select id="objSelect">
-                <option value="apt" data-i18n="calc.objApt">Квартира</option>
-                <option value="office" data-i18n="calc.objOffice">Офис / клиника</option>
-                <option value="postreno" data-i18n="calc.objPost">После ремонта</option>
-              </select>
-            </div>
-
-            <div class="field" id="aptTypeField">
-              <label data-i18n="calc.aptType">Формат</label>
-              <select id="aptSelect">
-                <option value="studio" data-i18n="apt.studio">Студия</option>
-                <option value="1+1" data-i18n="apt.a11">1+1</option>
-                <option value="2+1+1wc" data-i18n="apt.a21wc">2+1 + WC</option>
-                <option value="2+1+2wc" data-i18n="apt.a212wc">2+1 + 2WC</option>
-                <option value="3+1+1wc" data-i18n="apt.a311wc">3+1 + 1WC</option>
-              </select>
-            </div>
-
-            <div class="field" id="sqmField" style="display:none;">
-              <label data-i18n="calc.area">Площадь, м²</label>
-              <select id="sqmSelect">
-                <option value="40">до 40</option>
-                <option value="60">до 60</option>
-                <option value="80">до 80</option>
-                <option value="100">до 100</option>
-                <option value="120">до 120</option>
-                <option value="150">до 150</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="divider"></div>
-
+      <div class="section-surface">
+        <div class="section-title">
           <div>
-            <div style="display:flex; align-items:flex-end; justify-content:space-between; gap:10px;">
-              <div>
-                <b style="font-size:14px;" data-i18n="calc.optionsTitle">Дополнительные услуги</b>
-                <div class="small-note" data-i18n="calc.optionsHint">Отметьте то, что нужно сделать дополнительно. Каждая опция увеличивает итог.</div>
-              </div>
-            </div>
-
-            <div class="options" id="optionsBox">
-              <!-- options injected -->
-            </div>
+            <h2 data-i18n="calc.title">Калькулятор цены</h2>
+            <p data-i18n="calc.desc">Выберите тип уборки, объект и доп. услуги. Цена считается автоматически (GEL).</p>
           </div>
         </div>
 
-        <div class="calc-right">
-          <div class="calc-result">
-            <div class="result-box">
-              <div class="row">
+        <div class="calc">
+          <div class="calc-left">
+            <div class="tabs" aria-label="Calculator tabs">
+              <button type="button" class="active" data-calc-type="standard" data-i18n="calc.standard">Стандартная</button>
+              <button type="button" data-calc-type="deep" data-i18n="calc.deep">Генеральная</button>
+            </div>
+
+            <div class="form-row">
+              <div class="field">
+                <label data-i18n="calc.object">Объект</label>
+                <select id="objSelect">
+                  <option value="apt" data-i18n="calc.objApt">Квартира</option>
+                  <option value="office" data-i18n="calc.objOffice">Офис / клиника</option>
+                  <option value="postreno" data-i18n="calc.objPost">После ремонта</option>
+                </select>
+              </div>
+
+              <div class="field" id="aptTypeField">
+                <label data-i18n="calc.aptType">Формат</label>
+                <select id="aptSelect">
+                  <option value="studio" data-i18n="apt.studio">Студия</option>
+                  <option value="1+1" data-i18n="apt.a11">1+1</option>
+                  <option value="2+1+1wc" data-i18n="apt.a21wc">2+1 + WC</option>
+                  <option value="2+1+2wc" data-i18n="apt.a212wc">2+1 + 2WC</option>
+                  <option value="3+1+1wc" data-i18n="apt.a311wc">3+1 + 1WC</option>
+                </select>
+              </div>
+
+              <div class="field" id="sqmField" style="display:none;">
+                <label data-i18n="calc.area">Площадь, м²</label>
+                <select id="sqmSelect">
+                  <option value="40">до 40</option>
+                  <option value="60">до 60</option>
+                  <option value="80">до 80</option>
+                  <option value="100">до 100</option>
+                  <option value="120">до 120</option>
+                  <option value="150">до 150</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <div>
+              <div style="display:flex; align-items:flex-end; justify-content:space-between; gap:10px;">
                 <div>
-                  <h3 data-i18n="calc.summaryTitle">Итог</h3>
-                  <p id="summaryText"></p>
+                  <b style="font-size:14px;" data-i18n="calc.optionsTitle">Дополнительные услуги</b>
+                  <div class="small-note" data-i18n="calc.optionsHint">Отметьте то, что нужно сделать дополнительно. Каждая опция увеличивает итог.</div>
                 </div>
-                <div class="result-price" id="totalPrice">0 GEL</div>
               </div>
-              <div class="divider"></div>
-              <div class="small-note" data-i18n="calc.note">
-                Цена ориентировочная. Финальная стоимость зависит от состояния и объёма работ. Мы подтвердим цену в сообщении/звонке.
-              </div>
+
+              <div class="options" id="optionsBox"></div>
             </div>
+          </div>
 
-            <div class="card" style="overflow:hidden;">
-              <div class="media" style="height:180px;">
-                <img src="apartment-cleaning-service.jpg" alt="Apartment cleaning service" />
-              </div>
-              <div class="card-body">
-                <div class="card-title">
-                  <h3 data-i18n="calc.fastOrder">Быстрый заказ</h3>
-                  <span class="price" id="pricePill">0 GEL</span>
+          <div class="calc-right">
+            <div class="calc-result">
+              <div class="result-box">
+                <div class="row">
+                  <div>
+                    <h3 data-i18n="calc.summaryTitle">Итог</h3>
+                    <p id="summaryText"></p>
+                  </div>
+                  <div class="result-price" id="totalPrice">0 GEL</div>
                 </div>
-                <p data-i18n="calc.fastDesc">Нажмите, и мы уточним детали: адрес, удобное время и особенности объекта.</p>
+                <div class="divider"></div>
+                <div class="small-note" data-i18n="calc.note">
+                  Цена ориентировочная. Финальная стоимость зависит от состояния и объёма работ. Мы подтвердим цену в сообщении/звонке.
+                </div>
+              </div>
 
-                <div class="pill-row">
-                  <a class="btn btn-primary" id="waBtn" href="#" target="_blank" rel="noopener" data-i18n="calc.whatsapp">Написать в WhatsApp</a>
-                  <a class="btn btn-ghost" id="callBtn" href="tel:+995900000000" data-i18n="calc.call">Позвонить</a>
+              <div class="card" style="overflow:hidden;">
+                <div class="media" style="height:180px;">
+                  <img src="apartment-cleaning-service.jpg" alt="Apartment cleaning service" />
+                </div>
+                <div class="card-body">
+                  <div class="card-title">
+                    <h3 data-i18n="calc.fastOrder">Быстрый заказ</h3>
+                    <span class="price" id="pricePill">0 GEL</span>
+                  </div>
+                  <p data-i18n="calc.fastDesc">Нажмите, и мы уточним детали: адрес, удобное время и особенности объекта.</p>
+
+                  <div class="lead-box">
+                    <div class="field">
+                      <label data-i18n="lead.nameLabel">Имя</label>
+                      <input id="leadName" type="text" placeholder="Mark" />
+                    </div>
+                    <div class="field">
+                      <label data-i18n="lead.phoneLabel">Телефон</label>
+                      <input id="leadPhone" type="tel" placeholder="+995..." />
+                    </div>
+                    <div class="field">
+                      <label data-i18n="lead.addrLabel">Адрес</label>
+                      <input id="leadAddr" type="text" placeholder="Batumi..." />
+                    </div>
+                    <div class="field">
+                      <label data-i18n="lead.timeLabel">Дата/время</label>
+                      <input id="leadTime" type="text" placeholder="Сегодня 18:00" />
+                    </div>
+                    <div class="field" style="grid-column:1 / -1;">
+                      <label data-i18n="lead.commentLabel">Комментарий</label>
+                      <textarea id="leadComment" placeholder="Например: есть животные, нужен акцент на кухню..."></textarea>
+                    </div>
+                  </div>
+
+                  <!-- Messenger actions (UX fix: icons + clear separation) -->
+                  <div class="lead-actions">
+                    <a class="btn btn-wa btn-icon" id="waBtn" href="#" target="_blank" rel="noopener" data-i18n="calc.whatsapp">
+                      <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path fill="currentColor" d="M20.52 3.49A11.78 11.78 0 0 0 12.04 0C5.5 0 .16 5.34.16 11.88c0 2.1.55 4.16 1.6 5.98L0 24l6.33-1.66a11.82 11.82 0 0 0 5.7 1.45h.01c6.54 0 11.88-5.34 11.88-11.88 0-3.17-1.24-6.15-3.4-8.42ZM12.04 21.7h-.01a9.86 9.86 0 0 1-5.04-1.38l-.36-.21-3.75.98 1-3.65-.24-.37a9.83 9.83 0 0 1-1.53-5.19c0-5.45 4.44-9.89 9.9-9.89 2.64 0 5.12 1.03 6.99 2.9a9.82 9.82 0 0 1 2.9 6.99c0 5.46-4.44 9.89-9.86 9.89Zm5.74-7.38c-.31-.16-1.85-.91-2.13-1.02-.29-.1-.5-.16-.71.16-.21.31-.82 1.02-1 1.23-.19.21-.37.23-.68.08-.31-.16-1.31-.48-2.49-1.54-.92-.82-1.54-1.85-1.72-2.16-.18-.31-.02-.48.14-.64.14-.14.31-.37.47-.55.16-.19.21-.31.31-.52.1-.21.05-.39-.03-.55-.08-.16-.71-1.7-.98-2.33-.26-.62-.52-.54-.71-.55h-.6c-.21 0-.55.08-.84.39-.29.31-1.1 1.08-1.1 2.63 0 1.54 1.13 3.03 1.29 3.24.16.21 2.22 3.39 5.38 4.75.75.32 1.33.51 1.78.66.75.24 1.43.2 1.97.12.6-.09 1.85-.75 2.11-1.48.26-.73.26-1.36.18-1.48-.08-.13-.29-.21-.6-.37Z"/>
+                      </svg>
+                      <span>WhatsApp</span>
+                    </a>
+
+                    <button class="btn btn-tg btn-icon" id="tgBtn" type="button" data-i18n="lead.tgSend">
+                      <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path fill="currentColor" d="M22.98 3.47c.17-.73-.53-1.32-1.2-1.06L1.44 10.26c-.77.3-.72 1.41.07 1.63l5.49 1.54 12.75-8.06c.6-.38 1.15.23.7.68l-9.2 8.86-.36 5.41c.53 0 .77-.24 1.07-.52l2.58-2.5 5.36 3.96c.98.54 1.68.26 1.93-.91l1.15-16.88Z"/>
+                      </svg>
+                      <span data-i18n="lead.tgSend">Отправить в Telegram</span>
+                    </button>
+
+                    <a class="btn btn-ghost btn-icon" id="callBtn" href="tel:+995900000000" data-i18n="calc.call">
+                      <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path fill="currentColor" d="M6.62 10.79a15.05 15.05 0 0 0 6.59 6.59l2.2-2.2a1 1 0 0 1 1.01-.24c1.12.37 2.33.57 3.58.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1C10.85 21 3 13.15 3 3a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.46.57 3.58a1 1 0 0 1-.24 1.01l-2.2 2.2Z"/>
+                      </svg>
+                      <span data-i18n="calc.call">Позвонить</span>
+                    </a>
+                  </div>
+
+                  <div class="small-note" style="margin-top:10px;" data-i18n="lead.privacy">
+                    Нажимая “Отправить”, вы соглашаетесь, что мы свяжемся с вами для уточнения деталей.
+                  </div>
                 </div>
               </div>
+
+              <div class="card">
+                <div class="card-body">
+                  <div class="card-title">
+                    <h3 data-i18n="calc.includedMini">Что включено</h3>
+                    <span class="price" data-i18n="calc.checklist">Чек-лист</span>
+                  </div>
+                  <p id="includedMiniText"></p>
+                </div>
+              </div>
+
             </div>
-
-            <div class="card">
-              <div class="card-body">
-                <div class="card-title">
-                  <h3 data-i18n="calc.includedMini">Что включено</h3>
-                  <span class="price" data-i18n="calc.checklist">Чек-лист</span>
-                </div>
-                <p id="includedMiniText"></p>
-              </div>
-            </div>
-
           </div>
         </div>
       </div>
@@ -959,80 +1150,82 @@
     </div>
   </section>
 
-  <!-- EXTRA SERVICES (photos from your folder) -->
+  <!-- EXTRA SERVICES -->
   <section id="extras">
     <div class="container">
-      <div class="section-title">
-        <div>
-          <h2 data-i18n="extras.title">Дополнительные услуги</h2>
-          <p data-i18n="extras.desc">То, что часто просят отдельно. Все опции доступны в калькуляторе.</p>
-        </div>
-      </div>
-
-      <div class="grid cols-3">
-        <div class="card">
-          <div class="media"><img src="oven-cleaning-service.jpg" alt="Oven cleaning" /></div>
-          <div class="card-body">
-            <div class="card-title">
-              <h3 data-i18n="opt.oven">Мытьё духовки внутри</h3>
-              <span class="price">+30 GEL</span>
-            </div>
-            <p data-i18n="extras.ovenDesc">Обезжиривание, решётки, стекло. Без повреждений покрытия.</p>
+      <div class="section-surface">
+        <div class="section-title">
+          <div>
+            <h2 data-i18n="extras.title">Дополнительные услуги</h2>
+            <p data-i18n="extras.desc">То, что часто просят отдельно. Все опции доступны в калькуляторе.</p>
           </div>
         </div>
 
-        <div class="card">
-          <div class="media"><img src="microwave-inside-cleaning.jpg" alt="Microwave cleaning" /></div>
-          <div class="card-body">
-            <div class="card-title">
-              <h3 data-i18n="opt.microwave">Мытьё микроволновки внутри</h3>
-              <span class="price">+15 GEL</span>
+        <div class="grid cols-3">
+          <div class="card">
+            <div class="media"><img src="oven-cleaning-service.jpg" alt="Oven cleaning" /></div>
+            <div class="card-body">
+              <div class="card-title">
+                <h3 data-i18n="opt.oven">Мытьё духовки внутри</h3>
+                <span class="price">+30 GEL</span>
+              </div>
+              <p data-i18n="extras.ovenDesc">Обезжиривание, решётки, стекло. Без повреждений покрытия.</p>
             </div>
-            <p data-i18n="extras.mwDesc">Удаление запахов и следов пищи, аккуратно и быстро.</p>
           </div>
-        </div>
 
-        <div class="card">
-          <div class="media"><img src="windowcleaning.jpg" alt="Window cleaning" /></div>
-          <div class="card-body">
-            <div class="card-title">
-              <h3 data-i18n="opt.windows">Мытьё окон</h3>
-              <span class="price">+35 GEL</span>
+          <div class="card">
+            <div class="media"><img src="microwave-inside-cleaning.jpg" alt="Microwave cleaning" /></div>
+            <div class="card-body">
+              <div class="card-title">
+                <h3 data-i18n="opt.microwave">Мытьё микроволновки внутри</h3>
+                <span class="price">+15 GEL</span>
+              </div>
+              <p data-i18n="extras.mwDesc">Удаление запахов и следов пищи, аккуратно и быстро.</p>
             </div>
-            <p data-i18n="extras.winDesc">Окна, рамы, подоконники. Для панорамных есть отдельная опция.</p>
           </div>
-        </div>
 
-        <div class="card">
-          <div class="media"><img src="floor-to-ceiling-window-cleaning.jpg" alt="Floor to ceiling windows" /></div>
-          <div class="card-body">
-            <div class="card-title">
-              <h3 data-i18n="opt.panorama">Окна в пол / панорама</h3>
-              <span class="price">+60 GEL</span>
+          <div class="card">
+            <div class="media"><img src="windowcleaning.jpg" alt="Window cleaning" /></div>
+            <div class="card-body">
+              <div class="card-title">
+                <h3 data-i18n="opt.windows">Мытьё окон</h3>
+                <span class="price">+35 GEL</span>
+              </div>
+              <p data-i18n="extras.winDesc">Окна, рамы, подоконники. Для панорамных есть отдельная опция.</p>
             </div>
-            <p data-i18n="extras.panDesc">Большие стеклянные поверхности — больше времени и осторожности.</p>
           </div>
-        </div>
 
-        <div class="card">
-          <div class="media"><img src="balconycleaning.jpg" alt="Balcony cleaning" /></div>
-          <div class="card-body">
-            <div class="card-title">
-              <h3 data-i18n="opt.balcony">Уборка балкона</h3>
-              <span class="price">+25 GEL</span>
+          <div class="card">
+            <div class="media"><img src="floor-to-ceiling-window-cleaning.jpg" alt="Floor to ceiling windows" /></div>
+            <div class="card-body">
+              <div class="card-title">
+                <h3 data-i18n="opt.panorama">Окна в пол / панорама</h3>
+                <span class="price">+60 GEL</span>
+              </div>
+              <p data-i18n="extras.panDesc">Большие стеклянные поверхности — больше времени и осторожности.</p>
             </div>
-            <p data-i18n="extras.balDesc">Пол, перила, пыль/мусор, зона хранения.</p>
           </div>
-        </div>
 
-        <div class="card">
-          <div class="media"><img src="closet.jpg" alt="Closet cleaning" /></div>
-          <div class="card-body">
-            <div class="card-title">
-              <h3 data-i18n="opt.closet">Уборка в шкафу</h3>
-              <span class="price">+20 GEL</span>
+          <div class="card">
+            <div class="media"><img src="balconycleaning.jpg" alt="Balcony cleaning" /></div>
+            <div class="card-body">
+              <div class="card-title">
+                <h3 data-i18n="opt.balcony">Уборка балкона</h3>
+                <span class="price">+25 GEL</span>
+              </div>
+              <p data-i18n="extras.balDesc">Пол, перила, пыль/мусор, зона хранения.</p>
             </div>
-            <p data-i18n="extras.closetDesc">Аккуратно протираем полки и фасады, без перестановки личных вещей.</p>
+          </div>
+
+          <div class="card">
+            <div class="media"><img src="closet.jpg" alt="Closet cleaning" /></div>
+            <div class="card-body">
+              <div class="card-title">
+                <h3 data-i18n="opt.closet">Уборка в шкафу</h3>
+                <span class="price">+20 GEL</span>
+              </div>
+              <p data-i18n="extras.closetDesc">Аккуратно протираем полки и фасады, без перестановки личных вещей.</p>
+            </div>
           </div>
         </div>
       </div>
@@ -1042,15 +1235,23 @@
   <!-- CTA -->
   <section>
     <div class="container">
-      <div class="cta">
-        <div>
-          <h3 data-i18n="cta.title">Готовы сделать чисто?</h3>
-          <p data-i18n="cta.desc">Напишите или позвоните — мы уточним детали, время и подтвердим цену. Работаем по Батуми и рядом.</p>
-        </div>
-        <div class="cta-actions">
-          <a href="#calculator" class="btn btn-primary" data-i18n="cta.btn1">Рассчитать цену</a>
-          <a id="ctaWa" class="btn btn-ghost" href="#" target="_blank" rel="noopener" data-i18n="cta.btn2">WhatsApp</a>
-          <a id="ctaCall" class="btn btn-ghost" href="tel:+995900000000" data-i18n="cta.btn3">Позвонить</a>
+      <div class="section-surface">
+        <div class="cta">
+          <div>
+            <h3 data-i18n="cta.title">Готовы сделать чисто?</h3>
+            <p data-i18n="cta.desc">Напишите или позвоните — мы уточним детали, время и подтвердим цену. Работаем по Батуми и рядом.</p>
+          </div>
+          <div class="cta-actions">
+            <a href="#calculator" class="btn btn-primary" data-i18n="cta.btn1">Рассчитать цену</a>
+            <a id="ctaWa" class="btn btn-wa btn-icon" href="#" target="_blank" rel="noopener" data-i18n="cta.btn2">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M20.52 3.49A11.78 11.78 0 0 0 12.04 0C5.5 0 .16 5.34.16 11.88c0 2.1.55 4.16 1.6 5.98L0 24l6.33-1.66a11.82 11.82 0 0 0 5.7 1.45h.01c6.54 0 11.88-5.34 11.88-11.88 0-3.17-1.24-6.15-3.4-8.42Z"/></svg>
+              <span>WhatsApp</span>
+            </a>
+            <a id="ctaCall" class="btn btn-ghost btn-icon" href="tel:+995900000000" data-i18n="cta.btn3">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M6.62 10.79a15.05 15.05 0 0 0 6.59 6.59l2.2-2.2a1 1 0 0 1 1.01-.24c1.12.37 2.33.57 3.58.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1C10.85 21 3 13.15 3 3a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.46.57 3.58a1 1 0 0 1-.24 1.01l-2.2 2.2Z"/></svg>
+              <span data-i18n="cta.btn3">Позвонить</span>
+            </a>
+          </div>
         </div>
       </div>
     </div>
@@ -1067,42 +1268,47 @@
   </div>
 </footer>
 
+<!-- Mobile sticky actions -->
+<div class="mobile-sticky" aria-label="Quick actions">
+  <a class="btn btn-wa btn-icon" id="waSticky" href="#" target="_blank" rel="noopener">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M20.52 3.49A11.78 11.78 0 0 0 12.04 0C5.5 0 .16 5.34.16 11.88c0 2.1.55 4.16 1.6 5.98L0 24l6.33-1.66a11.82 11.82 0 0 0 5.7 1.45h.01c6.54 0 11.88-5.34 11.88-11.88 0-3.17-1.24-6.15-3.4-8.42Z"/></svg>
+    <span>WhatsApp</span>
+  </a>
+  <button class="btn btn-tg btn-icon" id="tgSticky" type="button">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M22.98 3.47c.17-.73-.53-1.32-1.2-1.06L1.44 10.26c-.77.3-.72 1.41.07 1.63l5.49 1.54 12.75-8.06c.6-.38 1.15.23.7.68l-9.2 8.86-.36 5.41c.53 0 .77-.24 1.07-.52l2.58-2.5 5.36 3.96c.98.54 1.68.26 1.93-.91l1.15-16.88Z"/></svg>
+    <span>Telegram</span>
+  </button>
+</div>
+
+<div class="toast" id="toast"></div>
+
 <script>
   // ======================
-  // CONFIG (phone + WhatsApp)
+  // CONFIG (phone + WhatsApp + Telegram)
   // ======================
-  const PHONE_RAW = "+995900000000"; // <-- если нужно, замени на реальный номер
-  const PHONE_PRETTY = "+995 900 000 000"; // <-- красивый показ
+  const PHONE_RAW = "+995900000000"; // <-- замени на реальный номер
+  const PHONE_PRETTY = "+995 900 000 000";
   const WHATSAPP_NUMBER = "995900000000";  // без плюса
+
+  // ======================
+  // TELEGRAM (SECURE PLACEHOLDERS)
+  // ======================
+  // ВАЖНО: НЕ хранить токен в публичном фронтенде.
+  // Если всё же хочешь "быстро и без сервера", вставь сюда вручную (на свой риск).
+  // Лучше: сделать /api/telegram на сервере и отправлять туда.
+  const TELEGRAM_CHAT_ID = "";     // <-- ВСТАВЬ chat_id СЮДА при необходимости
+  const TELEGRAM_BOT_TOKEN = "";   // <-- ВСТАВЬ token СЮДА при необходимости
 
   // ======================
   // PRICING (market GEL)
   // ======================
   const PRICING = {
     apartment: {
-      standard: {
-        "studio": 90,
-        "1+1": 120,
-        "2+1+1wc": 160,
-        "2+1+2wc": 190,
-        "3+1+1wc": 200
-      },
-      deep: {
-        "studio": 130,
-        "1+1": 170,
-        "2+1+1wc": 220,
-        "2+1+2wc": 260,
-        "3+1+1wc": 290
-      }
+      standard: { "studio": 90, "1+1": 120, "2+1+1wc": 160, "2+1+2wc": 190, "3+1+1wc": 200 },
+      deep:     { "studio":130, "1+1": 170, "2+1+1wc": 220, "2+1+2wc": 260, "3+1+1wc": 290 }
     },
-    office: {
-      standard: { perM2: 2.5 },
-      deep: { perM2: 3.2 }
-    },
-    postreno: {
-      standard: { perM2: 3.5 },
-      deep: { perM2: 4.3 }
-    }
+    office:   { standard:{ perM2: 2.5 }, deep:{ perM2: 3.2 } },
+    postreno: { standard:{ perM2: 3.5 }, deep:{ perM2: 4.3 } }
   };
 
   const OPTIONS = [
@@ -1120,10 +1326,7 @@
   const translations = {
     ru: {
       from:"от",
-      header:{
-        subtitle:"Профессиональная уборка",
-        callnow:"Позвонить / WhatsApp"
-      },
+      header:{ subtitle:"Профессиональная уборка", callnow:"Позвонить / WhatsApp" },
       hero:{
         badge1:"Квартиры и офисы",
         badge2:"Батуми • 7 дней в неделю",
@@ -1157,17 +1360,8 @@
         postrenoDesc:"Пыль после ремонта, следы строительных работ, тщательная детализация.",
         calc:"Рассчитать"
       },
-      included:{
-        title:"Что входит в уборку",
-        desc:"Визуальный чек-лист по комнатам. Переключайте комнаты и тип уборки (стандартная / генеральная).",
-        roomTitle:"Комната"
-      },
-      rooms:{
-        bedroom:"Спальня",
-        bathroom:"Ванная",
-        kitchen:"Кухня",
-        hallway:"Прихожая"
-      },
+      included:{ title:"Что входит в уборку", desc:"Визуальный чек-лист по комнатам. Переключайте комнаты и тип уборки (стандартная / генеральная).", roomTitle:"Комната" },
+      rooms:{ bedroom:"Спальня", bathroom:"Ванная", kitchen:"Кухня", hallway:"Прихожая" },
       calc:{
         title:"Калькулятор цены",
         desc:"Выберите тип уборки, объект и доп. услуги. Цена считается автоматически (GEL).",
@@ -1190,29 +1384,18 @@
         includedMini:"Что включено",
         checklist:"Чек-лист"
       },
-      apt:{
-        studio:"Студия",
-        a11:"1+1",
-        a21wc:"2+1 + WC",
-        a212wc:"2+1 + 2WC",
-        a311wc:"3+1 + 1WC"
+      lead:{
+        nameLabel:"Имя",
+        phoneLabel:"Телефон",
+        addrLabel:"Адрес",
+        timeLabel:"Дата/время",
+        commentLabel:"Комментарий",
+        tgSend:"Отправить в Telegram",
+        privacy:"Нажимая “Отправить”, вы соглашаетесь, что мы свяжемся с вами для уточнения деталей."
       },
-      opt:{
-        windows:"Мытьё окон",
-        panorama:"Окна в пол / панорама",
-        balcony:"Уборка балкона",
-        oven:"Мытьё духовки внутри",
-        microwave:"Мытьё микроволновки внутри",
-        closet:"Уборка в шкафу"
-      },
-      optSub:{
-        windows:"+ рамы и подоконники",
-        panorama:"больше стекла — больше времени",
-        balcony:"пол, перила, мусор",
-        oven:"обезжиривание и стекло",
-        microwave:"запахи и следы пищи",
-        closet:"полки и фасады"
-      },
+      apt:{ studio:"Студия", a11:"1+1", a21wc:"2+1 + WC", a212wc:"2+1 + 2WC", a311wc:"3+1 + 1WC" },
+      opt:{ windows:"Мытьё окон", panorama:"Окна в пол / панорама", balcony:"Уборка балкона", oven:"Мытьё духовки внутри", microwave:"Мытьё микроволновки внутри", closet:"Уборка в шкафу" },
+      optSub:{ windows:"+ рамы и подоконники", panorama:"больше стекла — больше времени", balcony:"пол, перила, мусор", oven:"обезжиривание и стекло", microwave:"запахи и следы пищи", closet:"полки и фасады" },
       extras:{
         title:"Дополнительные услуги",
         desc:"То, что часто просят отдельно. Все опции доступны в калькуляторе.",
@@ -1223,14 +1406,13 @@
         balDesc:"Пол, перила, пыль/мусор, зона хранения.",
         closetDesc:"Аккуратно протираем полки и фасады, без перестановки личных вещей."
       },
-      cta:{
-        title:"Готовы сделать чисто?",
-        desc:"Напишите или позвоните — мы уточним детали, время и подтвердим цену. Работаем по Батуми и рядом.",
-        btn1:"Рассчитать цену",
-        btn2:"WhatsApp",
-        btn3:"Позвонить"
-      },
-      footer:{ note:"Цены ориентировочные. Итог подтверждаем перед работой." }
+      cta:{ title:"Готовы сделать чисто?", desc:"Напишите или позвоните — мы уточним детали, время и подтвердим цену. Работаем по Батуми и рядом.", btn1:"Рассчитать цену", btn2:"WhatsApp", btn3:"Позвонить" },
+      footer:{ note:"Цены ориентировочные. Итог подтверждаем перед работой." },
+      toast:{
+        tgOk:"Заявка отправлена в Telegram. Мы свяжемся с вами.",
+        tgNoToken:"Telegram не настроен. Вставьте TELEGRAM_BOT_TOKEN и TELEGRAM_CHAT_ID в коде (или сделайте серверный /api).",
+        tgFail:"Не удалось отправить. Попробуйте WhatsApp или звонок."
+      }
     },
 
     en: {
@@ -1254,7 +1436,7 @@
       },
       packages:{
         title:"Cleaning packages",
-        desc:"Market prices for Batumi (GEL). Final price depends on condition and add-ons — fully transparent in the calculator.",
+        desc:"Market prices for Batumi (GEL). Final price depends on condition and add-ons — transparent in the calculator.",
         studio:"Studio",
         studioDesc:"Basic clean, bathroom, kitchen, floors, surfaces, trash out.",
         a11:"Apartment 1+1",
@@ -1269,11 +1451,7 @@
         postrenoDesc:"Construction dust and traces, detailed cleaning.",
         calc:"Calculate"
       },
-      included:{
-        title:"What’s included",
-        desc:"Visual room checklist. Switch rooms and cleaning type (standard / deep).",
-        roomTitle:"Room"
-      },
+      included:{ title:"What’s included", desc:"Visual room checklist. Switch rooms and cleaning type (standard / deep).", roomTitle:"Room" },
       rooms:{ bedroom:"Bedroom", bathroom:"Bathroom", kitchen:"Kitchen", hallway:"Hallway" },
       calc:{
         title:"Price calculator",
@@ -1297,23 +1475,18 @@
         includedMini:"Included",
         checklist:"Checklist"
       },
+      lead:{
+        nameLabel:"Name",
+        phoneLabel:"Phone",
+        addrLabel:"Address",
+        timeLabel:"Date/time",
+        commentLabel:"Comment",
+        tgSend:"Send to Telegram",
+        privacy:"By sending, you agree we may contact you to confirm details."
+      },
       apt:{ studio:"Studio", a11:"1+1", a21wc:"2+1 + WC", a212wc:"2+1 + 2WC", a311wc:"3+1 + 1WC" },
-      opt:{
-        windows:"Window cleaning",
-        panorama:"Panoramic / floor-to-ceiling windows",
-        balcony:"Balcony cleaning",
-        oven:"Oven inside cleaning",
-        microwave:"Microwave inside cleaning",
-        closet:"Closet cleaning"
-      },
-      optSub:{
-        windows:"+ frames & sills",
-        panorama:"more glass, more time",
-        balcony:"floor, railings, trash",
-        oven:"degrease + glass",
-        microwave:"odors & stains",
-        closet:"shelves & fronts"
-      },
+      opt:{ windows:"Window cleaning", panorama:"Panoramic / floor-to-ceiling windows", balcony:"Balcony cleaning", oven:"Oven inside cleaning", microwave:"Microwave inside cleaning", closet:"Closet cleaning" },
+      optSub:{ windows:"+ frames & sills", panorama:"more glass, more time", balcony:"floor, railings, trash", oven:"degrease + glass", microwave:"odors & stains", closet:"shelves & fronts" },
       extras:{
         title:"Extra services",
         desc:"Most requested add-ons. All options are available in the calculator.",
@@ -1322,16 +1495,15 @@
         winDesc:"Windows, frames, sills. Panoramic option is separate.",
         panDesc:"Large glass surfaces take more time and care.",
         balDesc:"Floor, railings, dust/trash, storage zone.",
-        closetDesc:"Wipe shelves and fronts аккуратно (no moving personal items)."
+        closetDesc:"Wipe shelves and fronts (no moving personal items)."
       },
-      cta:{
-        title:"Ready for a spotless home?",
-        desc:"Message or call — we’ll confirm details, time and price. Serving Batumi and nearby.",
-        btn1:"Calculate price",
-        btn2:"WhatsApp",
-        btn3:"Call"
-      },
-      footer:{ note:"Prices are indicative. Final quote is confirmed before work." }
+      cta:{ title:"Ready for a spotless home?", desc:"Message or call — we’ll confirm details, time and price. Serving Batumi and nearby.", btn1:"Calculate price", btn2:"WhatsApp", btn3:"Call" },
+      footer:{ note:"Prices are indicative. Final quote is confirmed before work." },
+      toast:{
+        tgOk:"Request sent to Telegram. We will contact you.",
+        tgNoToken:"Telegram is not configured. Set TELEGRAM_BOT_TOKEN and TELEGRAM_CHAT_ID (or use a server /api).",
+        tgFail:"Could not send. Please use WhatsApp or call."
+      }
     },
 
     ka: {
@@ -1370,11 +1542,7 @@
         postrenoDesc:"სამშენებლო მტვერი და კვალი, დეტალური წმენდა.",
         calc:"გამოთვლა"
       },
-      included:{
-        title:"რა შედის წმენდაში",
-        desc:"ვიზუალური ჩეკლისტი ოთახების მიხედვით. გადართეთ ოთახები და წმენდის ტიპი (სტანდარტული / გენერალური).",
-        roomTitle:"ოთახი"
-      },
+      included:{ title:"რა შედის წმენდაში", desc:"ვიზუალური ჩეკლისტი ოთახების მიხედვით. გადართეთ ოთახები და წმენდის ტიპი (სტანდარტული / გენერალური).", roomTitle:"ოთახი" },
       rooms:{ bedroom:"საძინებელი", bathroom:"აბაზანა", kitchen:"სამზარეულო", hallway:"შემოსასვლელი" },
       calc:{
         title:"ფასის კალკულატორი",
@@ -1398,23 +1566,18 @@
         includedMini:"შედის",
         checklist:"ჩეკლისტი"
       },
+      lead:{
+        nameLabel:"სახელი",
+        phoneLabel:"ტელეფონი",
+        addrLabel:"მისამართი",
+        timeLabel:"თარიღი/დრო",
+        commentLabel:"კომენტარი",
+        tgSend:"Telegram-ზე გაგზავნა",
+        privacy:"გაგზავნით, ეთანხმებით რომ დაგიკავშირდებით დეტალების დასაზუსტებლად."
+      },
       apt:{ studio:"სტუდიო", a11:"1+1", a21wc:"2+1 + WC", a212wc:"2+1 + 2WC", a311wc:"3+1 + 1WC" },
-      opt:{
-        windows:"ფანჯრების წმენდა",
-        panorama:"პანორამული / იატაკამდე ფანჯრები",
-        balcony:"აივნის დასუფთავება",
-        oven:"ღუმელის შიდა წმენდა",
-        microwave:"მიკროტალღურის შიდა წმენდა",
-        closet:"კარადის დასუფთავება"
-      },
-      optSub:{
-        windows:"+ ჩარჩოები და რაფები",
-        panorama:"მეტი მინა — მეტი დრო",
-        balcony:"იატაკი, მოაჯირები, ნაგავი",
-        oven:"ცხიმის მოცილება + მინა",
-        microwave:"სუნი და ლაქები",
-        closet:"თაროები და ფასადები"
-      },
+      opt:{ windows:"ფანჯრების წმენდა", panorama:"პანორამული / იატაკამდე ფანჯრები", balcony:"აივნის დასუფთავება", oven:"ღუმელის შიდა წმენდა", microwave:"მიკროტალღურის შიდა წმენდა", closet:"კარადის დასუფთავება" },
+      optSub:{ windows:"+ ჩარჩოები და რაფები", panorama:"მეტი მინა — მეტი დრო", balcony:"იატაკი, მოაჯირები, ნაგავი", oven:"ცხიმის მოცილება + მინა", microwave:"სუნი და ლაქები", closet:"თაროები და ფასადები" },
       extras:{
         title:"დამატებითი სერვისები",
         desc:"ხშირად მოთხოვნადი დამატებები. ყველა ვარიანტი არის კალკულატორში.",
@@ -1425,14 +1588,13 @@
         balDesc:"იატაკი, მოაჯირები, მტვერი/ნაგავი.",
         closetDesc:"თაროებისა და ფასადების გაწმენდა (პირადი ნივთების გადალაგების გარეშე)."
       },
-      cta:{
-        title:"გსურთ სისუფთავე?",
-        desc:"მოგვწერეთ ან დაგვირეკეთ — დავაზუსტებთ დროს და ფასს. ვმუშაობთ ბათუმში და ახლოს.",
-        btn1:"ფასის გამოთვლა",
-        btn2:"WhatsApp",
-        btn3:"დარეკვა"
-      },
-      footer:{ note:"ფასები ორიენტირია. საბოლოოს ვადასტურებთ დაწყებამდე." }
+      cta:{ title:"გსურთ სისუფთავე?", desc:"მოგვწერეთ ან დაგვირეკეთ — დავაზუსტებთ დროს და ფასს. ვმუშაობთ ბათუმში და ახლოს.", btn1:"ფასის გამოთვლა", btn2:"WhatsApp", btn3:"დარეკვა" },
+      footer:{ note:"ფასები ორიენტირია. საბოლოოს ვადასტურებთ დაწყებამდე." },
+      toast:{
+        tgOk:"მოთხოვნა გაგზავნილია Telegram-ზე. დაგიკავშირდებით.",
+        tgNoToken:"Telegram არ არის კონფიგურირებული. ჩასვი TELEGRAM_BOT_TOKEN და TELEGRAM_CHAT_ID (ან გააკეთე სერვერული /api).",
+        tgFail:"ვერ გაიგზავნა. სცადეთ WhatsApp ან დარეკვა."
+      }
     }
   };
 
@@ -1513,8 +1675,8 @@
   // State
   // ======================
   let currentLang = "ru";
-  let calcType = "standard"; // standard | deep
-  let roomType = "standard"; // for visual checklist
+  let calcType = "standard";
+  let roomType = "standard";
   let currentRoom = "bedroom";
   let selectedOptions = new Set();
 
@@ -1525,7 +1687,6 @@
   const $$ = (sel) => Array.from(document.querySelectorAll(sel));
 
   function t(path){
-    // path like "hero.title"
     const parts = path.split(".");
     let obj = translations[currentLang];
     for(const p of parts){
@@ -1535,30 +1696,29 @@
     return obj ?? path;
   }
 
+  function showToast(text, type="ok"){
+    const el = $("#toast");
+    el.textContent = text;
+    el.className = "toast show " + (type === "bad" ? "bad" : "ok");
+    clearTimeout(showToast._t);
+    showToast._t = setTimeout(()=>{ el.className = "toast"; }, 3400);
+  }
+
   function setLang(lang){
     currentLang = lang;
-
-    // toggle buttons
-    $$(".lang button").forEach(b=>{
-      b.classList.toggle("active", b.dataset.lang === lang);
-    });
-
-    // update all i18n nodes
+    $$(".lang button").forEach(b=> b.classList.toggle("active", b.dataset.lang === lang));
     $$("[data-i18n]").forEach(el=>{
       const key = el.getAttribute("data-i18n");
       const val = t(key);
       if(typeof val === "string") el.textContent = val;
     });
 
-    // also update summary
     renderOptions();
     updateCalculator();
     renderRoomVisual();
   }
 
-  function formatGEL(n){
-    return `${Math.round(n)} GEL`;
-  }
+  function formatGEL(n){ return `${Math.round(n)} GEL`; }
 
   function calcBasePrice(){
     const obj = $("#objSelect").value;
@@ -1590,7 +1750,6 @@
   }
 
   function getIncludedText(){
-    // short text for "What's included"
     if(calcType === "standard"){
       return currentLang === "ru"
         ? "Поверхности на уровне рук, полы, санузел, кухня, вынос мусора, протирка видимой пыли."
@@ -1599,14 +1758,14 @@
           : "ხელის დონეზე ზედაპირები, იატაკი, აბაზანა, სამზარეულო, ნაგვის გატანა, ხილული მტვრის გაწმენდა.";
     } else {
       return currentLang === "ru"
-        ? "Более глубокая детализация: труднодоступные зоны, стекло/зеркала, следы налёта, больше времени на санузел и кухню."
+        ? "Глубокая детализация: труднодоступные зоны, стекло/зеркала, следы налёта, больше времени на санузел и кухню."
         : currentLang === "en"
           ? "Deeper detailing: hard-to-reach areas, glass/mirrors, limescale traces, more time for bathroom and kitchen."
           : "ღრმა დეტალიზაცია: ძნელად მისადგომი ადგილები, მინა/სარკეები, ნადები, მეტი დრო აბაზანასა და სამზარეულოზე.";
     }
   }
 
-  function getSummaryText(total){
+  function getSummaryText(){
     const obj = $("#objSelect").value;
     const typeLabel = calcType === "deep" ? t("calc.deep") : t("calc.standard");
 
@@ -1618,12 +1777,12 @@
       const objLabelKey = $("#objSelect").selectedOptions[0]?.getAttribute("data-i18n");
       const objLabel = objLabelKey ? t(objLabelKey) : $("#objSelect").value;
       const sqm = $("#sqmSelect").value;
-      return `${typeLabel}: ${objLabel} (${sqm} м²). ${t("calc.optionsTitle")}: ${selectedOptions.size}.`;
+      const m2 = (currentLang === "ru") ? "м²" : "m²";
+      return `${typeLabel}: ${objLabel} (${sqm} ${m2}). ${t("calc.optionsTitle")}: ${selectedOptions.size}.`;
     }
   }
 
   function updateCalculator(){
-    // toggle apt vs sqm
     const obj = $("#objSelect").value;
     const aptField = $("#aptTypeField");
     const sqmField = $("#sqmField");
@@ -1642,19 +1801,20 @@
 
     $("#totalPrice").textContent = formatGEL(total);
     $("#pricePill").textContent = formatGEL(total);
-
-    const summary = getSummaryText(total);
-    $("#summaryText").textContent = summary;
-
+    $("#summaryText").textContent = getSummaryText();
     $("#includedMiniText").textContent = getIncludedText();
 
     const msg = buildWhatsAppMessage(total);
     const waUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
     $("#waBtn").href = waUrl;
     $("#ctaWa").href = waUrl;
+    $("#waSticky").href = waUrl;
 
     $("#callBtn").href = `tel:${PHONE_RAW}`;
+    $("#phoneLink").href = `tel:${PHONE_RAW}`;
     $("#ctaCall").href = `tel:${PHONE_RAW}`;
+
+    updateCalculator.lastTotal = total;
   }
 
   function buildWhatsAppMessage(total){
@@ -1681,13 +1841,11 @@
       const objLabelKey = $("#objSelect").selectedOptions[0]?.getAttribute("data-i18n");
       const objLabel = objLabelKey ? t(objLabelKey) : $("#objSelect").value;
       lines.push(`${currentLang==="ru"?"Объект":"Object"}: ${objLabel}`);
-      lines.push(`${currentLang==="ru"?"Площадь":"Area"}: ${$("#sqmSelect").value} м²`);
+      lines.push(`${currentLang==="ru"?"Площадь":"Area"}: ${$("#sqmSelect").value} ${currentLang==="ru"?"м²":"m²"}`);
     }
 
     if(selectedOptions.size){
-      const names = OPTIONS
-        .filter(o=>selectedOptions.has(o.key))
-        .map(o=>t(o.i18n));
+      const names = OPTIONS.filter(o=>selectedOptions.has(o.key)).map(o=>t(o.i18n));
       lines.push(`${currentLang==="ru"?"Доп. услуги":"Add-ons"}: ${names.join(", ")}`);
     }
 
@@ -1696,13 +1854,84 @@
     return lines.join("\n");
   }
 
+  function buildTelegramMessage(total){
+    const obj = $("#objSelect").value;
+    const typeLabel = calcType === "deep" ? t("calc.deep") : t("calc.standard");
+
+    const name = ($("#leadName").value || "").trim();
+    const phone = ($("#leadPhone").value || "").trim();
+    const addr = ($("#leadAddr").value || "").trim();
+    const time = ($("#leadTime").value || "").trim();
+    const comment = ($("#leadComment").value || "").trim();
+
+    const objLabelKey = $("#objSelect").selectedOptions[0]?.getAttribute("data-i18n");
+    const objLabel = objLabelKey ? t(objLabelKey) : $("#objSelect").value;
+
+    let lines = [];
+    lines.push("🧽 New lead: Cleanex Batumi");
+    lines.push(`Language: ${currentLang.toUpperCase()}`);
+    lines.push(`Type: ${typeLabel}`);
+
+    if(obj === "apt"){
+      const aptLabelKey = $("#aptSelect").selectedOptions[0]?.getAttribute("data-i18n");
+      const aptLabel = aptLabelKey ? t(aptLabelKey) : $("#aptSelect").value;
+      lines.push(`Object: Apartment ${aptLabel}`);
+    } else {
+      lines.push(`Object: ${objLabel}`);
+      lines.push(`Area: ${$("#sqmSelect").value} m²`);
+    }
+
+    if(selectedOptions.size){
+      const names = OPTIONS.filter(o=>selectedOptions.has(o.key)).map(o=>t(o.i18n));
+      lines.push(`Add-ons: ${names.join(", ")}`);
+    } else {
+      lines.push("Add-ons: —");
+    }
+
+    lines.push(`Estimated price: ${formatGEL(total)}`);
+    lines.push("—");
+
+    lines.push(`Name: ${name || "—"}`);
+    lines.push(`Phone: ${phone || "—"}`);
+    lines.push(`Address: ${addr || "—"}`);
+    lines.push(`Date/time: ${time || "—"}`);
+    lines.push(`Comment: ${comment || "—"}`);
+
+    return lines.join("\n");
+  }
+
+  async function sendLeadToTelegram(){
+    // Token/chat_id intentionally empty until you set them:
+    if(!TELEGRAM_BOT_TOKEN || !TELEGRAM_CHAT_ID){
+      showToast(t("toast.tgNoToken"), "bad");
+      return;
+    }
+
+    const total = updateCalculator.lastTotal ?? 0;
+    const text = buildTelegramMessage(total);
+
+    try{
+      const res = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ chat_id: TELEGRAM_CHAT_ID, text })
+      });
+
+      if(!res.ok) throw new Error("Telegram sendMessage failed");
+
+      showToast(t("toast.tgOk"), "ok");
+    }catch(e){
+      console.error(e);
+      showToast(t("toast.tgFail"), "bad");
+    }
+  }
+
   function renderOptions(){
     const box = $("#optionsBox");
     box.innerHTML = "";
 
     for(const opt of OPTIONS){
       const checked = selectedOptions.has(opt.key);
-
       const el = document.createElement("label");
       el.className = "opt";
       el.innerHTML = `
@@ -1715,7 +1944,6 @@
       box.appendChild(el);
     }
 
-    // bind
     box.querySelectorAll("input[type=checkbox]").forEach(cb=>{
       cb.addEventListener("change", (e)=>{
         const key = e.target.dataset.opt;
@@ -1728,62 +1956,56 @@
 
   function renderRoomVisual(){
     const container = $("#roomImage");
+    const listBox = $("#roomList");
     container.innerHTML = "";
+    listBox.innerHTML = "";
 
     const d = roomData[currentRoom];
     const img = document.createElement("img");
-    // Use your existing images. We pick "apartment-cleaning-service.jpg" as base background (clean and wide).
-    // You can later swap per-room backgrounds if you add specific room images.
     img.src = d.image;
     img.alt = "Room checklist visual";
     container.appendChild(img);
 
     const list = (roomType === "deep") ? d.deep : d.standard;
+
     for(const item of list){
       const bubble = document.createElement("div");
       bubble.className = "bubble";
       bubble.style.left = item.x;
       bubble.style.top = item.y;
-
       const text = currentLang === "ru" ? item.t_ru : (currentLang === "en" ? item.t_en : item.t_ka);
       bubble.innerHTML = `<span class="b-dot"></span><span>${text}</span>`;
       container.appendChild(bubble);
     }
+
+    for(const item of list){
+      const text = currentLang === "ru" ? item.t_ru : (currentLang === "en" ? item.t_en : item.t_ka);
+      const row = document.createElement("div");
+      row.className = "room-item";
+      row.innerHTML = `<span class="b-dot"></span><span>${text}</span>`;
+      listBox.appendChild(row);
+    }
   }
 
-  // ======================
-  // Init & Events
-  // ======================
   function init(){
-    // year
     $("#year").textContent = new Date().getFullYear();
 
-    // phone
     $("#phoneText").textContent = PHONE_PRETTY;
     $("#phoneLink").href = `tel:${PHONE_RAW}`;
     $("#callBtn").href = `tel:${PHONE_RAW}`;
     $("#ctaCall").href = `tel:${PHONE_RAW}`;
 
-    // language buttons
-    $$(".lang button").forEach(b=>{
-      b.addEventListener("click", ()=>{
-        setLang(b.dataset.lang);
-      });
-    });
+    $$(".lang button").forEach(b=> b.addEventListener("click", ()=> setLang(b.dataset.lang)));
 
-    // calculator tabs
     $$('[data-calc-type]').forEach(btn=>{
       btn.addEventListener("click", ()=>{
         $$('[data-calc-type]').forEach(x=>x.classList.remove("active"));
         btn.classList.add("active");
         calcType = btn.dataset.calcType;
         updateCalculator();
-        // keep visual tabs in sync for user feel
-        // (not forced; but it is pleasant)
       });
     });
 
-    // visual checklist cleaning type tabs
     $$('[data-cleaning-type]').forEach(btn=>{
       btn.addEventListener("click", ()=>{
         $$('[data-cleaning-type]').forEach(x=>x.classList.remove("active"));
@@ -1793,7 +2015,6 @@
       });
     });
 
-    // room tabs
     $$('[data-room]').forEach(btn=>{
       btn.addEventListener("click", ()=>{
         $$('[data-room]').forEach(x=>x.classList.remove("active"));
@@ -1803,24 +2024,17 @@
       });
     });
 
-    // selects
-    $("#objSelect").addEventListener("change", ()=>{
-      // reset options? keep them - user friendly
-      updateCalculator();
-    });
+    $("#objSelect").addEventListener("change", updateCalculator);
     $("#aptSelect").addEventListener("change", updateCalculator);
     $("#sqmSelect").addEventListener("change", updateCalculator);
 
-    // first render
+    $("#tgBtn").addEventListener("click", sendLeadToTelegram);
+    $("#tgSticky").addEventListener("click", sendLeadToTelegram);
+
     renderOptions();
     setLang("ru");
     updateCalculator();
     renderRoomVisual();
-
-    // CTA WA
-    $("#ctaWa").addEventListener("click", (e)=>{
-      if(!$("#ctaWa").href || $("#ctaWa").href === "#") e.preventDefault();
-    });
   }
 
   init();
