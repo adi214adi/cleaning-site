@@ -80,13 +80,14 @@
       border-bottom:1px solid rgba(255,255,255,.08);
     }
     .header-inner{
-      height:var(--headerH);
+      min-height:var(--headerH);
+      padding: calc(env(safe-area-inset-top) + 8px) 0 8px;
       display:flex; align-items:center; justify-content:space-between;
       gap:12px;
     }
     .brand{
       display:flex; align-items:center; gap:12px;
-      min-width:200px;
+      min-width:0;
     }
     .logo{
       width:42px; height:42px;
@@ -115,6 +116,7 @@
     .phone-pill{
       display:flex; align-items:center; gap:10px;
       padding:10px 12px;
+      max-width:100%;
       border-radius:999px;
       background: rgba(255,255,255,.08);
       border:1px solid rgba(255,255,255,.14);
@@ -361,13 +363,14 @@
 
     .media{
       position:relative;
-      height:160px;
+      height:190px;
       background: rgba(255,255,255,.06);
       overflow:hidden;
     }
     .media img{
       width:100%; height:100%;
       object-fit:cover;
+      object-position:center top;
       filter: saturate(1.02) contrast(1.02);
       transform: scale(1.02);
     }
@@ -585,6 +588,7 @@
     }
 
     .bubble{
+      display:none; /* UX: do not overlay text on photo */
       position:absolute;
       display:flex; align-items:center; gap:8px;
       padding:10px 12px;
@@ -788,11 +792,11 @@
       </div>
 
       <div class="header-right">
-        <a class="phone-pill" id="phoneLink" href="tel:+995900000000" aria-label="Call">
+        <a class="phone-pill" id="phoneLink" href="tel:+995557679772" aria-label="Call">
           <span class="dot" aria-hidden="true"></span>
           <span class="phone-text">
             <small data-i18n="header.callnow">Позвонить / WhatsApp</small>
-            <b id="phoneText">+995 900 000 000</b>
+            <b id="phoneText">+995 557 67 97 72</b>
           </span>
         </a>
 
@@ -907,7 +911,19 @@
             </div>
           </div>
 
-          <div class="card">
+                    <div class="card">
+            <div class="media"><img src="2+1+2WC.jpg" alt="2+1+2WC apartment cleaning" /></div>
+            <div class="card-body">
+              <div class="card-title">
+                <h3 data-i18n="packages.a212wc">Квартира 2+1 + 2WC</h3>
+                <span class="price"><span data-i18n="from">от</span> 190 GEL</span>
+              </div>
+              <p data-i18n="packages.a212wcDesc">2 спальни + гостиная/кухня, 2 санузла. Для больших семей и гостей.</p>
+              <a class="btn btn-primary btn-full" href="#calculator" data-i18n="packages.calc">Рассчитать</a>
+            </div>
+          </div>
+
+<div class="card">
             <div class="media"><img src="3+1+1WC.jpg" alt="3+1+1WC apartment cleaning" /></div>
             <div class="card-body">
               <div class="card-title">
@@ -926,7 +942,7 @@
             <div class="card-body">
               <div class="card-title">
                 <h3 data-i18n="packages.office">Клининг офисов</h3>
-                <span class="price"><span data-i18n="from">от</span> 2.5 GEL/м²</span>
+                <span class="price"><span data-i18n="from">от</span> 3 GEL/м²</span>
               </div>
               <p data-i18n="packages.officeDesc">Поддерживающая и генеральная уборка офисов, кабинетов, клиник. Расчёт по площади.</p>
               <a class="btn btn-primary btn-full" href="#calculator" data-i18n="packages.calc">Рассчитать</a>
@@ -938,7 +954,7 @@
             <div class="card-body">
               <div class="card-title">
                 <h3 data-i18n="packages.postreno">Уборка после ремонта</h3>
-                <span class="price"><span data-i18n="from">от</span> 3.5 GEL/м²</span>
+                <span class="price"><span data-i18n="from">от</span> 4 GEL/м²</span>
               </div>
               <p data-i18n="packages.postrenoDesc">Пыль после ремонта, следы строительных работ, тщательная детализация.</p>
               <a class="btn btn-primary btn-full" href="#calculator" data-i18n="packages.calc">Рассчитать</a>
@@ -1118,7 +1134,7 @@
                       <span data-i18n="lead.tgSend">Отправить в Telegram</span>
                     </button>
 
-                    <a class="btn btn-ghost btn-icon" id="callBtn" href="tel:+995900000000" data-i18n="calc.call">
+                    <a class="btn btn-ghost btn-icon" id="callBtn" href="tel:+995557679772" data-i18n="calc.call">
                       <svg viewBox="0 0 24 24" aria-hidden="true">
                         <path fill="currentColor" d="M6.62 10.79a15.05 15.05 0 0 0 6.59 6.59l2.2-2.2a1 1 0 0 1 1.01-.24c1.12.37 2.33.57 3.58.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1C10.85 21 3 13.15 3 3a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.46.57 3.58a1 1 0 0 1-.24 1.01l-2.2 2.2Z"/>
                       </svg>
@@ -1247,7 +1263,7 @@
               <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M20.52 3.49A11.78 11.78 0 0 0 12.04 0C5.5 0 .16 5.34.16 11.88c0 2.1.55 4.16 1.6 5.98L0 24l6.33-1.66a11.82 11.82 0 0 0 5.7 1.45h.01c6.54 0 11.88-5.34 11.88-11.88 0-3.17-1.24-6.15-3.4-8.42Z"/></svg>
               <span>WhatsApp</span>
             </a>
-            <a id="ctaCall" class="btn btn-ghost btn-icon" href="tel:+995900000000" data-i18n="cta.btn3">
+            <a id="ctaCall" class="btn btn-ghost btn-icon" href="tel:+995557679772" data-i18n="cta.btn3">
               <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M6.62 10.79a15.05 15.05 0 0 0 6.59 6.59l2.2-2.2a1 1 0 0 1 1.01-.24c1.12.37 2.33.57 3.58.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1C10.85 21 3 13.15 3 3a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.46.57 3.58a1 1 0 0 1-.24 1.01l-2.2 2.2Z"/></svg>
               <span data-i18n="cta.btn3">Позвонить</span>
             </a>
@@ -1286,9 +1302,9 @@
   // ======================
   // CONFIG (phone + WhatsApp + Telegram)
   // ======================
-  const PHONE_RAW = "+995900000000"; // <-- замени на реальный номер
-  const PHONE_PRETTY = "+995 900 000 000";
-  const WHATSAPP_NUMBER = "995900000000";  // без плюса
+  const PHONE_RAW = "+995557679772"; // <-- замени на реальный номер
+  const PHONE_PRETTY = "+995 557 67 97 72";
+  const WHATSAPP_NUMBER = "995557679772";  // без плюса
 
   // ======================
   // TELEGRAM (SECURE PLACEHOLDERS)
@@ -1307,8 +1323,8 @@
       standard: { "studio": 90, "1+1": 120, "2+1+1wc": 160, "2+1+2wc": 190, "3+1+1wc": 200 },
       deep:     { "studio":130, "1+1": 170, "2+1+1wc": 220, "2+1+2wc": 260, "3+1+1wc": 290 }
     },
-    office:   { standard:{ perM2: 2.5 }, deep:{ perM2: 3.2 } },
-    postreno: { standard:{ perM2: 3.5 }, deep:{ perM2: 4.3 } }
+    office:   { standard:{ perM2: 3.0 }, deep:{ perM2: 3.7 } },
+    postreno: { standard:{ perM2: 4.0 }, deep:{ perM2: 4.8 } }
   };
 
   const OPTIONS = [
@@ -1352,6 +1368,8 @@
         a11Desc:"Спальня + гостиная/кухня, санузел, пыль/поверхности, полы.",
         a21wc:"Квартира 2+1 + WC",
         a21wcDesc:"2 спальни + гостиная/кухня, 1 санузел. Идеально для регулярной уборки.",
+        a212wc:"Квартира 2+1 + 2WC",
+        a212wcDesc:"2 спальни + гостиная/кухня, 2 санузла. Для больших семей и гостей.",
         a311wc:"Квартира 3+1 + 1 WC",
         a311wcDesc:"Большая квартира: больше поверхностей и времени — лучше считать точно.",
         office:"Клининг офисов",
@@ -1443,6 +1461,8 @@
         a11Desc:"Bedroom + living/kitchen, bathroom, dust/surfaces, floors.",
         a21wc:"Apartment 2+1 + WC",
         a21wcDesc:"2 bedrooms + living/kitchen, 1 bathroom. Great for regular cleaning.",
+        a212wc:"Apartment 2+1 + 2WC",
+        a212wcDesc:"2 bedrooms + living/kitchen, 2 bathrooms. Best for families and guests.",
         a311wc:"Apartment 3+1 + 1 WC",
         a311wcDesc:"Larger home: more surfaces and time — better to calculate precisely.",
         office:"Office cleaning",
@@ -1534,6 +1554,8 @@
         a11Desc:"საძინებელი + მისაღები/სამზარეულო, აბაზანა, მტვერი/ზედაპირები, იატაკი.",
         a21wc:"ბინა 2+1 + WC",
         a21wcDesc:"2 საძინებელი + მისაღები/სამზარეულო, 1 სველი წერტილი.",
+        a212wc:"ბინა 2+1 + 2WC",
+        a212wcDesc:"2 საძინებელი + მისაღები/სამზარეულო, 2 სველი წერტილი. ოჯახებისთვის და სტუმრებისთვის.",
         a311wc:"ბინა 3+1 + 1 WC",
         a311wcDesc:"დიდი ბინა — ჯობს ზუსტად დაითვალოთ კალკულატორით.",
         office:"ოფისების დასუფთავება",
@@ -1968,15 +1990,7 @@
 
     const list = (roomType === "deep") ? d.deep : d.standard;
 
-    for(const item of list){
-      const bubble = document.createElement("div");
-      bubble.className = "bubble";
-      bubble.style.left = item.x;
-      bubble.style.top = item.y;
-      const text = currentLang === "ru" ? item.t_ru : (currentLang === "en" ? item.t_en : item.t_ka);
-      bubble.innerHTML = `<span class="b-dot"></span><span>${text}</span>`;
-      container.appendChild(bubble);
-    }
+    /* UX: keep photo clean, show checklist below instead of overlay labels */
 
     for(const item of list){
       const text = currentLang === "ru" ? item.t_ru : (currentLang === "en" ? item.t_en : item.t_ka);
