@@ -1,0 +1,1829 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cleanex Batumi — Клининговая компания</title>
+  <meta name="description" content="Cleanex Batumi — профессиональная уборка квартир и офисов в Батуми. Стандартная и генеральная уборка. Калькулятор цены. RU/EN/KA." />
+  <style>
+    :root{
+      --bg:#0b1220;
+      --card:#0f1930;
+      --card2:#0c1630;
+      --text:#e9eefc;
+      --muted:rgba(233,238,252,.72);
+      --muted2:rgba(233,238,252,.55);
+      --stroke:rgba(255,255,255,.12);
+      --stroke2:rgba(255,255,255,.18);
+      --accent:#4fb3ff;
+      --accent2:#2de0c5;
+      --white:#ffffff;
+      --shadow: 0 18px 60px rgba(0,0,0,.35);
+      --radius: 18px;
+      --radius2: 24px;
+      --max: 1120px;
+      --headerH: 72px;
+    }
+
+    *{ box-sizing:border-box; }
+    html,body{ height:100%; }
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Helvetica Neue", sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(1200px 700px at 80% -100px, rgba(79,179,255,.35), transparent 55%),
+        radial-gradient(900px 600px at 10% 0px, rgba(45,224,197,.22), transparent 55%),
+        linear-gradient(180deg, #070d18 0%, #0b1220 35%, #070d18 100%);
+      overflow-x:hidden;
+    }
+
+    a{ color:inherit; text-decoration:none; }
+    img{ max-width:100%; display:block; }
+
+    .container{ width:100%; max-width:var(--max); margin:0 auto; padding:0 18px; }
+
+    /* Header */
+    header{
+      position:sticky; top:0; z-index:50;
+      backdrop-filter: blur(12px);
+      background: rgba(7,13,24,.55);
+      border-bottom:1px solid rgba(255,255,255,.08);
+    }
+    .header-inner{
+      height:var(--headerH);
+      display:flex; align-items:center; justify-content:space-between;
+      gap:12px;
+    }
+    .brand{
+      display:flex; align-items:center; gap:12px;
+      min-width:200px;
+    }
+    .logo{
+      width:42px; height:42px;
+      border-radius:14px;
+      background:
+        radial-gradient(14px 14px at 30% 30%, rgba(255,255,255,.9), rgba(255,255,255,.25) 60%, transparent 65%),
+        linear-gradient(135deg, rgba(79,179,255,.95), rgba(45,224,197,.85));
+      box-shadow: 0 14px 40px rgba(79,179,255,.18);
+      border:1px solid rgba(255,255,255,.25);
+    }
+    .brand-text{
+      display:flex; flex-direction:column; line-height:1.05;
+    }
+    .brand-text strong{
+      font-size:14px; letter-spacing:.2px;
+    }
+    .brand-text span{
+      font-size:12px; color:var(--muted2);
+    }
+
+    .header-right{
+      display:flex; align-items:center; gap:10px; flex-wrap:wrap;
+      justify-content:flex-end;
+    }
+
+    .phone-pill{
+      display:flex; align-items:center; gap:10px;
+      padding:10px 12px;
+      border-radius:999px;
+      background: rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.14);
+      box-shadow: 0 10px 30px rgba(0,0,0,.22);
+      white-space:nowrap;
+    }
+    .phone-pill .dot{
+      width:10px; height:10px; border-radius:99px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      box-shadow: 0 0 0 4px rgba(79,179,255,.18);
+    }
+    .phone-pill .phone-text{
+      display:flex; flex-direction:column; line-height:1.05;
+    }
+    .phone-pill .phone-text small{ font-size:11px; color:var(--muted2); }
+    .phone-pill .phone-text b{
+      font-size:14px; letter-spacing:.4px;
+    }
+    .phone-pill:hover{ border-color:rgba(255,255,255,.24); }
+
+    .lang{
+      display:flex; align-items:center;
+      padding:6px;
+      border-radius:999px;
+      background: rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.14);
+    }
+    .lang button{
+      border:0; background:transparent; color:var(--muted);
+      padding:8px 10px;
+      border-radius:999px;
+      font-weight:700;
+      font-size:12px;
+      letter-spacing:.3px;
+      cursor:pointer;
+      transition:.18s ease;
+      min-width:42px;
+    }
+    .lang button.active{
+      color:#07101e;
+      background: linear-gradient(135deg, rgba(79,179,255,1), rgba(45,224,197,1));
+      box-shadow: 0 12px 35px rgba(79,179,255,.16);
+    }
+    .lang button:hover{ color:var(--text); }
+
+    /* Buttons */
+    .btn{
+      display:inline-flex; align-items:center; justify-content:center;
+      gap:10px;
+      padding:12px 14px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+      color:var(--text);
+      font-weight:700;
+      cursor:pointer;
+      transition:.18s ease;
+      user-select:none;
+      white-space:nowrap;
+    }
+    .btn:hover{ transform: translateY(-1px); border-color:rgba(255,255,255,.26); }
+    .btn-primary{
+      border:0;
+      background: linear-gradient(135deg, rgba(79,179,255,1), rgba(45,224,197,1));
+      color:#061020;
+      box-shadow: 0 18px 50px rgba(79,179,255,.18);
+    }
+    .btn-primary:hover{ transform: translateY(-1px); filter:saturate(1.05); }
+    .btn-ghost{
+      background: rgba(255,255,255,.05);
+    }
+
+    /* Sections */
+    section{ padding:48px 0; }
+    .section-title{
+      display:flex; align-items:flex-end; justify-content:space-between; gap:14px;
+      margin-bottom:16px;
+    }
+    .section-title h2{
+      margin:0;
+      font-size:26px;
+      letter-spacing:.2px;
+    }
+    .section-title p{
+      margin:0;
+      color:var(--muted);
+      max-width:520px;
+      font-size:14px;
+      line-height:1.35;
+    }
+
+    /* Hero */
+    .hero{
+      padding-top:28px;
+    }
+    .hero-wrap{
+      display:grid;
+      grid-template-columns: 1.15fr .85fr;
+      gap:18px;
+      align-items:stretch;
+    }
+    .hero-left{
+      background: rgba(255,255,255,.04);
+      border:1px solid rgba(255,255,255,.10);
+      border-radius: var(--radius2);
+      box-shadow: var(--shadow);
+      padding:22px;
+      position:relative;
+      overflow:hidden;
+    }
+    .hero-left:before{
+      content:"";
+      position:absolute; inset:-2px;
+      background: radial-gradient(600px 300px at 20% 20%, rgba(79,179,255,.20), transparent 60%),
+                  radial-gradient(500px 260px at 80% 30%, rgba(45,224,197,.14), transparent 55%);
+      pointer-events:none;
+    }
+    .hero-content{ position:relative; z-index:2; }
+    .hero-badges{
+      display:flex; flex-wrap:wrap; gap:8px;
+      margin-bottom:12px;
+    }
+    .badge{
+      font-size:12px;
+      color: rgba(7,13,24,.95);
+      font-weight:800;
+      padding:8px 10px;
+      border-radius:999px;
+      background: rgba(255,255,255,.86);
+      border:1px solid rgba(255,255,255,.9);
+    }
+    .badge.alt{
+      background: rgba(255,255,255,.10);
+      color: var(--text);
+      border:1px solid rgba(255,255,255,.16);
+      font-weight:700;
+    }
+    .hero h1{
+      margin:0 0 10px;
+      font-size:38px;
+      line-height:1.08;
+      letter-spacing:.2px;
+    }
+    .hero p{
+      margin:0 0 16px;
+      color:var(--muted);
+      font-size:15px;
+      line-height:1.45;
+      max-width: 620px;
+    }
+    .hero-actions{
+      display:flex; gap:10px; flex-wrap:wrap;
+      margin-top:12px;
+    }
+
+    .hero-right{
+      border-radius: var(--radius2);
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,.10);
+      box-shadow: var(--shadow);
+      position:relative;
+      min-height: 340px;
+      background: rgba(255,255,255,.04);
+    }
+    .hero-right img{
+      width:100%; height:100%;
+      object-fit:cover;
+      /* важное: лицо НЕ перекрывается, смещаем фокус */
+      object-position: 60% 30%;
+      filter: saturate(1.02) contrast(1.02);
+      transform: scale(1.02);
+    }
+    .hero-right:after{
+      content:"";
+      position:absolute; inset:0;
+      background: linear-gradient(180deg, rgba(7,13,24,.08) 0%, rgba(7,13,24,.42) 90%);
+      pointer-events:none;
+    }
+    .hero-mini{
+      position:absolute; left:14px; bottom:14px; right:14px;
+      display:grid; grid-template-columns: 1fr 1fr; gap:10px;
+      z-index:2;
+    }
+    .mini{
+      background: rgba(255,255,255,.10);
+      border:1px solid rgba(255,255,255,.16);
+      border-radius: 16px;
+      padding:12px 12px;
+      backdrop-filter: blur(10px);
+    }
+    .mini b{ display:block; font-size:14px; }
+    .mini span{ display:block; font-size:12px; color:var(--muted); margin-top:4px; }
+
+    /* Cards / grids */
+    .grid{
+      display:grid;
+      gap:14px;
+    }
+    .grid.cols-4{ grid-template-columns: repeat(4, 1fr); }
+    .grid.cols-3{ grid-template-columns: repeat(3, 1fr); }
+    .grid.cols-2{ grid-template-columns: repeat(2, 1fr); }
+
+    .card{
+      background: rgba(255,255,255,.04);
+      border:1px solid rgba(255,255,255,.10);
+      border-radius: var(--radius);
+      box-shadow: 0 14px 45px rgba(0,0,0,.22);
+      overflow:hidden;
+    }
+    .card .card-body{ padding:14px; }
+    .card .card-title{
+      display:flex; align-items:center; justify-content:space-between; gap:10px;
+      margin:0 0 8px;
+    }
+    .card .card-title h3{
+      margin:0; font-size:16px;
+    }
+    .price{
+      font-weight:900;
+      letter-spacing:.3px;
+      font-size:14px;
+      padding:7px 10px;
+      border-radius:999px;
+      background: rgba(255,255,255,.10);
+      border:1px solid rgba(255,255,255,.16);
+      white-space:nowrap;
+    }
+    .card p{
+      margin:0 0 12px;
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.4;
+    }
+
+    .media{
+      position:relative;
+      height:160px;
+      background: rgba(255,255,255,.06);
+      overflow:hidden;
+    }
+    .media img{
+      width:100%; height:100%;
+      object-fit:cover;
+      filter: saturate(1.02) contrast(1.02);
+      transform: scale(1.02);
+    }
+    .media:after{
+      content:"";
+      position:absolute; inset:0;
+      background: linear-gradient(180deg, rgba(7,13,24,.02) 0%, rgba(7,13,24,.40) 92%);
+      pointer-events:none;
+    }
+    .pill-row{
+      display:flex; flex-wrap:wrap; gap:8px;
+      margin-top:10px;
+    }
+    .pill{
+      font-size:12px;
+      color:var(--muted);
+      padding:7px 10px;
+      border-radius:999px;
+      background: rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.12);
+    }
+
+    /* Calculator */
+    .calc{
+      display:grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap:14px;
+      align-items:start;
+    }
+    .calc-left, .calc-right{
+      background: rgba(255,255,255,.04);
+      border:1px solid rgba(255,255,255,.10);
+      border-radius: var(--radius2);
+      box-shadow: var(--shadow);
+      padding:16px;
+    }
+    .tabs{
+      display:flex; gap:8px;
+      background: rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.12);
+      padding:6px;
+      border-radius:999px;
+      width:fit-content;
+      max-width:100%;
+      flex-wrap:wrap;
+    }
+    .tabs button{
+      border:0; cursor:pointer;
+      padding:10px 12px;
+      border-radius:999px;
+      background:transparent;
+      color:var(--muted);
+      font-weight:800;
+      font-size:12px;
+      transition:.18s ease;
+      white-space:nowrap;
+    }
+    .tabs button.active{
+      color:#061020;
+      background: linear-gradient(135deg, rgba(79,179,255,1), rgba(45,224,197,1));
+    }
+    .form-row{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:10px;
+      margin-top:12px;
+    }
+    .field{
+      display:flex; flex-direction:column; gap:6px;
+    }
+    .field label{
+      font-size:12px;
+      color:var(--muted2);
+      font-weight:700;
+      letter-spacing:.25px;
+    }
+    .field select{
+      width:100%;
+      padding:12px 12px;
+      border-radius:14px;
+      background: rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.14);
+      color:var(--text);
+      font-weight:700;
+      outline:none;
+      appearance:none;
+    }
+    .field select:focus{ border-color:rgba(79,179,255,.45); box-shadow:0 0 0 4px rgba(79,179,255,.14); }
+
+    .options{
+      margin-top:12px;
+      display:grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap:10px;
+    }
+    .opt{
+      display:flex; align-items:flex-start; gap:10px;
+      padding:12px;
+      border-radius:16px;
+      background: rgba(255,255,255,.05);
+      border:1px solid rgba(255,255,255,.12);
+      cursor:pointer;
+      transition:.18s ease;
+      user-select:none;
+    }
+    .opt:hover{ border-color:rgba(255,255,255,.22); transform: translateY(-1px); }
+    .opt input{ margin-top:3px; }
+    .opt b{ font-size:13px; display:block; }
+    .opt span{ font-size:12px; color:var(--muted); display:block; margin-top:3px; }
+
+    .calc-result{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+    .result-box{
+      padding:14px;
+      border-radius:18px;
+      border:1px solid rgba(255,255,255,.14);
+      background:
+        radial-gradient(500px 220px at 20% 0%, rgba(79,179,255,.16), transparent 55%),
+        radial-gradient(460px 240px at 90% 20%, rgba(45,224,197,.12), transparent 55%),
+        rgba(255,255,255,.04);
+      box-shadow: var(--shadow);
+    }
+    .result-box .row{
+      display:flex; align-items:flex-start; justify-content:space-between; gap:10px;
+    }
+    .result-box h3{
+      margin:0;
+      font-size:16px;
+      letter-spacing:.2px;
+    }
+    .result-box p{
+      margin:6px 0 0;
+      font-size:12px;
+      color:var(--muted);
+      line-height:1.35;
+    }
+    .result-price{
+      font-size:26px;
+      font-weight:1000;
+      letter-spacing:.3px;
+      white-space:nowrap;
+      color:#ffffff;
+    }
+    .small-note{
+      font-size:12px;
+      color:var(--muted2);
+      line-height:1.35;
+    }
+    .divider{
+      height:1px; background: rgba(255,255,255,.10);
+      margin:10px 0;
+    }
+
+    /* "What's included" room visual section */
+    .room-visual{
+      padding:12px;
+      border-radius: var(--radius2);
+      background: rgba(255,255,255,.04);
+      border:1px solid rgba(255,255,255,.10);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .room-top{
+      display:flex; align-items:center; justify-content:space-between; gap:10px;
+      margin:2px 2px 10px;
+      flex-wrap:wrap;
+    }
+    .room-top h3{
+      margin:0;
+      font-size:16px;
+      letter-spacing:.2px;
+    }
+    .room-switch{
+      display:flex;
+      gap:8px;
+      background: rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.12);
+      padding:6px;
+      border-radius:999px;
+      flex-wrap:wrap;
+    }
+    .room-switch button{
+      border:0; cursor:pointer;
+      padding:10px 12px;
+      border-radius:999px;
+      background:transparent;
+      color:var(--muted);
+      font-weight:900;
+      font-size:12px;
+      transition:.18s ease;
+    }
+    .room-switch button.active{
+      color:#061020;
+      background: linear-gradient(135deg, rgba(79,179,255,1), rgba(45,224,197,1));
+    }
+    .room-image{
+      position:relative;
+      border-radius: 18px;
+      overflow:hidden;
+      min-height: 300px;
+      background: rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.10);
+    }
+    .room-image img{
+      width:100%; height:100%;
+      object-fit:cover;
+      object-position:center;
+      transform: scale(1.02);
+      filter: saturate(1.02) contrast(1.02);
+    }
+    .room-image:after{
+      content:"";
+      position:absolute; inset:0;
+      background: linear-gradient(180deg, rgba(7,13,24,.04) 0%, rgba(7,13,24,.32) 92%);
+      pointer-events:none;
+    }
+
+    .bubble{
+      position:absolute;
+      display:flex; align-items:center; gap:8px;
+      padding:10px 12px;
+      border-radius:999px;
+      background: rgba(255,255,255,.90);
+      border:1px solid rgba(255,255,255,.95);
+      color:#0a0f1c;
+      font-weight:800;
+      font-size:12px;
+      box-shadow: 0 14px 40px rgba(0,0,0,.20);
+      max-width: 70%;
+    }
+    .bubble .b-dot{
+      width:10px; height:10px; border-radius:99px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      flex:0 0 auto;
+    }
+
+    /* CTA */
+    .cta{
+      border-radius: var(--radius2);
+      background:
+        radial-gradient(850px 360px at 20% 0%, rgba(79,179,255,.18), transparent 55%),
+        radial-gradient(700px 340px at 90% 30%, rgba(45,224,197,.14), transparent 55%),
+        rgba(255,255,255,.04);
+      border:1px solid rgba(255,255,255,.10);
+      box-shadow: var(--shadow);
+      padding:18px;
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:14px;
+      overflow:hidden;
+    }
+    .cta h3{ margin:0; font-size:18px; }
+    .cta p{ margin:8px 0 0; color:var(--muted); font-size:13px; line-height:1.4; }
+    .cta-actions{ display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end; align-items:center; }
+
+    /* Footer */
+    footer{
+      padding:28px 0 34px;
+      border-top:1px solid rgba(255,255,255,.08);
+      background: rgba(7,13,24,.35);
+    }
+    .footer-inner{
+      display:flex; justify-content:space-between; align-items:center;
+      gap:12px; flex-wrap:wrap;
+      color:var(--muted2);
+      font-size:12px;
+    }
+
+    /* Responsive */
+    @media (max-width: 980px){
+      .hero-wrap{ grid-template-columns: 1fr; }
+      .hero-right{ min-height: 320px; }
+      .grid.cols-4{ grid-template-columns: repeat(2, 1fr); }
+      .grid.cols-3{ grid-template-columns: 1fr; }
+      .calc{ grid-template-columns: 1fr; }
+      .options{ grid-template-columns: 1fr; }
+      .cta{ grid-template-columns: 1fr; }
+      .cta-actions{ justify-content:flex-start; }
+      .hero h1{ font-size:34px; }
+    }
+    @media (max-width: 520px){
+      .grid.cols-4{ grid-template-columns: 1fr; }
+      .hero h1{ font-size:30px; }
+      .phone-pill .phone-text b{ font-size:13px; }
+      .bubble{ max-width: 88%; font-size:11px; }
+    }
+  </style>
+</head>
+
+<body>
+<header>
+  <div class="container">
+    <div class="header-inner">
+      <div class="brand">
+        <div class="logo" aria-hidden="true"></div>
+        <div class="brand-text">
+          <strong>Cleanex Batumi</strong>
+          <span data-i18n="header.subtitle">Профессиональная уборка</span>
+        </div>
+      </div>
+
+      <div class="header-right">
+        <a class="phone-pill" id="phoneLink" href="tel:+995900000000" aria-label="Call">
+          <span class="dot" aria-hidden="true"></span>
+          <span class="phone-text">
+            <small data-i18n="header.callnow">Позвонить / WhatsApp</small>
+            <b id="phoneText">+995 900 000 000</b>
+          </span>
+        </a>
+
+        <div class="lang" aria-label="Language switch">
+          <button type="button" class="active" data-lang="ru">RU</button>
+          <button type="button" data-lang="en">EN</button>
+          <button type="button" data-lang="ka">KA</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <!-- HERO -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-wrap">
+        <!-- LEFT: текст (чтобы НЕ перекрывать лицо на фото) -->
+        <div class="hero-left">
+          <div class="hero-content">
+            <div class="hero-badges">
+              <span class="badge" data-i18n="hero.badge1">Квартиры и офисы</span>
+              <span class="badge alt" data-i18n="hero.badge2">Батуми • 7 дней в неделю</span>
+              <span class="badge alt" data-i18n="hero.badge3">Оплата наличными / переводом</span>
+            </div>
+
+            <h1 data-i18n="hero.title">Уборка, после которой приятно жить</h1>
+            <p data-i18n="hero.desc">
+              Стандартная и генеральная уборка квартир, офисов и помещений. Прозрачная цена, чек-лист по комнатам и доп. услуги: окна, балкон, духовка, микроволновка и другое.
+            </p>
+
+            <div class="hero-actions">
+              <a href="#calculator" class="btn btn-primary" data-i18n="hero.cta1">Рассчитать цену</a>
+              <a href="#packages" class="btn btn-ghost" data-i18n="hero.cta2">Посмотреть пакеты</a>
+            </div>
+
+            <div class="pill-row" style="margin-top:14px;">
+              <span class="pill" data-i18n="hero.pill1">Собственный инвентарь</span>
+              <span class="pill" data-i18n="hero.pill2">Аккуратно и без запаха химии</span>
+              <span class="pill" data-i18n="hero.pill3">Подходит для семей с детьми</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT: фото hero -->
+        <div class="hero-right">
+          <img src="hero.jpg" alt="Cleaning service hero image" />
+          <div class="hero-mini">
+            <div class="mini">
+              <b data-i18n="hero.m1t">Быстрый выезд</b>
+              <span data-i18n="hero.m1d">Обычно в тот же день или на завтра</span>
+            </div>
+            <div class="mini">
+              <b data-i18n="hero.m2t">Честная цена</b>
+              <span data-i18n="hero.m2d">Счёт в калькуляторе до заказа</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- PACKAGES -->
+  <section id="packages">
+    <div class="container">
+      <div class="section-title">
+        <div>
+          <h2 data-i18n="packages.title">Пакеты уборки</h2>
+          <p data-i18n="packages.desc">
+            Рыночные цены по Батуми (GEL). Итог зависит от состояния и выбранных доп. услуг — всё прозрачно в калькуляторе.
+          </p>
+        </div>
+      </div>
+
+      <div class="grid cols-4">
+        <div class="card">
+          <div class="media">
+            <img src="1.jpg" alt="Studio cleaning" />
+          </div>
+          <div class="card-body">
+            <div class="card-title">
+              <h3 data-i18n="packages.studio">Студия</h3>
+              <span class="price"><span data-i18n="from">от</span> 90 GEL</span>
+            </div>
+            <p data-i18n="packages.studioDesc">Базовая чистота, санузел, кухня, полы, поверхности, вынос мусора.</p>
+            <a class="btn btn-primary" href="#calculator" data-i18n="packages.calc">Рассчитать</a>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="media">
+            <img src="1+1.jpg" alt="1+1 apartment cleaning" />
+          </div>
+          <div class="card-body">
+            <div class="card-title">
+              <h3 data-i18n="packages.a11">Квартира 1+1</h3>
+              <span class="price"><span data-i18n="from">от</span> 120 GEL</span>
+            </div>
+            <p data-i18n="packages.a11Desc">Спальня + гостиная/кухня, санузел, пыль/поверхности, полы.</p>
+            <a class="btn btn-primary" href="#calculator" data-i18n="packages.calc">Рассчитать</a>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="media">
+            <img src="2+1+WC.jpg" alt="2+1+WC apartment cleaning" />
+          </div>
+          <div class="card-body">
+            <div class="card-title">
+              <h3 data-i18n="packages.a21wc">Квартира 2+1 + WC</h3>
+              <span class="price"><span data-i18n="from">от</span> 160 GEL</span>
+            </div>
+            <p data-i18n="packages.a21wcDesc">2 спальни + гостиная/кухня, 1 санузел. Идеально для регулярной уборки.</p>
+            <a class="btn btn-primary" href="#calculator" data-i18n="packages.calc">Рассчитать</a>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="media">
+            <img src="3+1+1WC.jpg" alt="3+1+1WC apartment cleaning" />
+          </div>
+          <div class="card-body">
+            <div class="card-title">
+              <h3 data-i18n="packages.a311wc">Квартира 3+1 + 1 WC</h3>
+              <span class="price"><span data-i18n="from">от</span> 200 GEL</span>
+            </div>
+            <p data-i18n="packages.a311wcDesc">Большая квартира: больше поверхностей и времени — лучше считать точно.</p>
+            <a class="btn btn-primary" href="#calculator" data-i18n="packages.calc">Рассчитать</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid cols-2" style="margin-top:14px;">
+        <div class="card">
+          <div class="media">
+            <img src="office-cleaning-service.jpg" alt="Office cleaning" />
+          </div>
+          <div class="card-body">
+            <div class="card-title">
+              <h3 data-i18n="packages.office">Клининг офисов</h3>
+              <span class="price"><span data-i18n="from">от</span> 2.5 GEL/м²</span>
+            </div>
+            <p data-i18n="packages.officeDesc">Поддерживающая и генеральная уборка офисов, кабинетов, клиник. Расчёт по площади.</p>
+            <a class="btn btn-primary" href="#calculator" data-i18n="packages.calc">Рассчитать</a>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="media">
+            <img src="post-renovation-cleaning.jpg" alt="Post renovation cleaning" />
+          </div>
+          <div class="card-body">
+            <div class="card-title">
+              <h3 data-i18n="packages.postreno">Уборка после ремонта</h3>
+              <span class="price"><span data-i18n="from">от</span> 3.5 GEL/м²</span>
+            </div>
+            <p data-i18n="packages.postrenoDesc">Пыль после ремонта, следы строительных работ, тщательная детализация.</p>
+            <a class="btn btn-primary" href="#calculator" data-i18n="packages.calc">Рассчитать</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- VISUAL CHECKLIST (ROOMS) -->
+  <section id="included">
+    <div class="container">
+      <div class="section-title">
+        <div>
+          <h2 data-i18n="included.title">Что входит в уборку</h2>
+          <p data-i18n="included.desc">
+            Визуальный чек-лист по комнатам. Переключайте комнаты и тип уборки (стандартная / генеральная).
+          </p>
+        </div>
+      </div>
+
+      <div class="room-visual">
+        <div class="room-top">
+          <h3 data-i18n="included.roomTitle">Комната</h3>
+
+          <div class="tabs" aria-label="Cleaning type tabs">
+            <button type="button" class="active" data-cleaning-type="standard" data-i18n="calc.standard">Стандартная</button>
+            <button type="button" data-cleaning-type="deep" data-i18n="calc.deep">Генеральная</button>
+          </div>
+
+          <div class="room-switch" aria-label="Room tabs">
+            <button type="button" class="active" data-room="bedroom" data-i18n="rooms.bedroom">Спальня</button>
+            <button type="button" data-room="bathroom" data-i18n="rooms.bathroom">Ванная</button>
+            <button type="button" data-room="kitchen" data-i18n="rooms.kitchen">Кухня</button>
+            <button type="button" data-room="hallway" data-i18n="rooms.hallway">Прихожая</button>
+          </div>
+        </div>
+
+        <div class="room-image" id="roomImage">
+          <!-- image injected by JS -->
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CALCULATOR -->
+  <section id="calculator">
+    <div class="container">
+      <div class="section-title">
+        <div>
+          <h2 data-i18n="calc.title">Калькулятор цены</h2>
+          <p data-i18n="calc.desc">Выберите тип уборки, объект и доп. услуги. Цена считается автоматически (GEL).</p>
+        </div>
+      </div>
+
+      <div class="calc">
+        <div class="calc-left">
+          <div class="tabs" aria-label="Calculator tabs">
+            <button type="button" class="active" data-calc-type="standard" data-i18n="calc.standard">Стандартная</button>
+            <button type="button" data-calc-type="deep" data-i18n="calc.deep">Генеральная</button>
+          </div>
+
+          <div class="form-row">
+            <div class="field">
+              <label data-i18n="calc.object">Объект</label>
+              <select id="objSelect">
+                <option value="apt" data-i18n="calc.objApt">Квартира</option>
+                <option value="office" data-i18n="calc.objOffice">Офис / клиника</option>
+                <option value="postreno" data-i18n="calc.objPost">После ремонта</option>
+              </select>
+            </div>
+
+            <div class="field" id="aptTypeField">
+              <label data-i18n="calc.aptType">Формат</label>
+              <select id="aptSelect">
+                <option value="studio" data-i18n="apt.studio">Студия</option>
+                <option value="1+1" data-i18n="apt.a11">1+1</option>
+                <option value="2+1+1wc" data-i18n="apt.a21wc">2+1 + WC</option>
+                <option value="2+1+2wc" data-i18n="apt.a212wc">2+1 + 2WC</option>
+                <option value="3+1+1wc" data-i18n="apt.a311wc">3+1 + 1WC</option>
+              </select>
+            </div>
+
+            <div class="field" id="sqmField" style="display:none;">
+              <label data-i18n="calc.area">Площадь, м²</label>
+              <select id="sqmSelect">
+                <option value="40">до 40</option>
+                <option value="60">до 60</option>
+                <option value="80">до 80</option>
+                <option value="100">до 100</option>
+                <option value="120">до 120</option>
+                <option value="150">до 150</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="divider"></div>
+
+          <div>
+            <div style="display:flex; align-items:flex-end; justify-content:space-between; gap:10px;">
+              <div>
+                <b style="font-size:14px;" data-i18n="calc.optionsTitle">Дополнительные услуги</b>
+                <div class="small-note" data-i18n="calc.optionsHint">Отметьте то, что нужно сделать дополнительно. Каждая опция увеличивает итог.</div>
+              </div>
+            </div>
+
+            <div class="options" id="optionsBox">
+              <!-- options injected -->
+            </div>
+          </div>
+        </div>
+
+        <div class="calc-right">
+          <div class="calc-result">
+            <div class="result-box">
+              <div class="row">
+                <div>
+                  <h3 data-i18n="calc.summaryTitle">Итог</h3>
+                  <p id="summaryText"></p>
+                </div>
+                <div class="result-price" id="totalPrice">0 GEL</div>
+              </div>
+              <div class="divider"></div>
+              <div class="small-note" data-i18n="calc.note">
+                Цена ориентировочная. Финальная стоимость зависит от состояния и объёма работ. Мы подтвердим цену в сообщении/звонке.
+              </div>
+            </div>
+
+            <div class="card" style="overflow:hidden;">
+              <div class="media" style="height:180px;">
+                <img src="apartment-cleaning-service.jpg" alt="Apartment cleaning service" />
+              </div>
+              <div class="card-body">
+                <div class="card-title">
+                  <h3 data-i18n="calc.fastOrder">Быстрый заказ</h3>
+                  <span class="price" id="pricePill">0 GEL</span>
+                </div>
+                <p data-i18n="calc.fastDesc">Нажмите, и мы уточним детали: адрес, удобное время и особенности объекта.</p>
+
+                <div class="pill-row">
+                  <a class="btn btn-primary" id="waBtn" href="#" target="_blank" rel="noopener" data-i18n="calc.whatsapp">Написать в WhatsApp</a>
+                  <a class="btn btn-ghost" id="callBtn" href="tel:+995900000000" data-i18n="calc.call">Позвонить</a>
+                </div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-body">
+                <div class="card-title">
+                  <h3 data-i18n="calc.includedMini">Что включено</h3>
+                  <span class="price" data-i18n="calc.checklist">Чек-лист</span>
+                </div>
+                <p id="includedMiniText"></p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- EXTRA SERVICES (photos from your folder) -->
+  <section id="extras">
+    <div class="container">
+      <div class="section-title">
+        <div>
+          <h2 data-i18n="extras.title">Дополнительные услуги</h2>
+          <p data-i18n="extras.desc">То, что часто просят отдельно. Все опции доступны в калькуляторе.</p>
+        </div>
+      </div>
+
+      <div class="grid cols-3">
+        <div class="card">
+          <div class="media"><img src="oven-cleaning-service.jpg" alt="Oven cleaning" /></div>
+          <div class="card-body">
+            <div class="card-title">
+              <h3 data-i18n="opt.oven">Мытьё духовки внутри</h3>
+              <span class="price">+30 GEL</span>
+            </div>
+            <p data-i18n="extras.ovenDesc">Обезжиривание, решётки, стекло. Без повреждений покрытия.</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="media"><img src="microwave-inside-cleaning.jpg" alt="Microwave cleaning" /></div>
+          <div class="card-body">
+            <div class="card-title">
+              <h3 data-i18n="opt.microwave">Мытьё микроволновки внутри</h3>
+              <span class="price">+15 GEL</span>
+            </div>
+            <p data-i18n="extras.mwDesc">Удаление запахов и следов пищи, аккуратно и быстро.</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="media"><img src="windowcleaning.jpg" alt="Window cleaning" /></div>
+          <div class="card-body">
+            <div class="card-title">
+              <h3 data-i18n="opt.windows">Мытьё окон</h3>
+              <span class="price">+35 GEL</span>
+            </div>
+            <p data-i18n="extras.winDesc">Окна, рамы, подоконники. Для панорамных есть отдельная опция.</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="media"><img src="floor-to-ceiling-window-cleaning.jpg" alt="Floor to ceiling windows" /></div>
+          <div class="card-body">
+            <div class="card-title">
+              <h3 data-i18n="opt.panorama">Окна в пол / панорама</h3>
+              <span class="price">+60 GEL</span>
+            </div>
+            <p data-i18n="extras.panDesc">Большие стеклянные поверхности — больше времени и осторожности.</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="media"><img src="balconycleaning.jpg" alt="Balcony cleaning" /></div>
+          <div class="card-body">
+            <div class="card-title">
+              <h3 data-i18n="opt.balcony">Уборка балкона</h3>
+              <span class="price">+25 GEL</span>
+            </div>
+            <p data-i18n="extras.balDesc">Пол, перила, пыль/мусор, зона хранения.</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="media"><img src="closet.jpg" alt="Closet cleaning" /></div>
+          <div class="card-body">
+            <div class="card-title">
+              <h3 data-i18n="opt.closet">Уборка в шкафу</h3>
+              <span class="price">+20 GEL</span>
+            </div>
+            <p data-i18n="extras.closetDesc">Аккуратно протираем полки и фасады, без перестановки личных вещей.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section>
+    <div class="container">
+      <div class="cta">
+        <div>
+          <h3 data-i18n="cta.title">Готовы сделать чисто?</h3>
+          <p data-i18n="cta.desc">Напишите или позвоните — мы уточним детали, время и подтвердим цену. Работаем по Батуми и рядом.</p>
+        </div>
+        <div class="cta-actions">
+          <a href="#calculator" class="btn btn-primary" data-i18n="cta.btn1">Рассчитать цену</a>
+          <a id="ctaWa" class="btn btn-ghost" href="#" target="_blank" rel="noopener" data-i18n="cta.btn2">WhatsApp</a>
+          <a id="ctaCall" class="btn btn-ghost" href="tel:+995900000000" data-i18n="cta.btn3">Позвонить</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <div>© <span id="year"></span> Cleanex Batumi</div>
+      <div data-i18n="footer.note">Цены ориентировочные. Итог подтверждаем перед работой.</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // ======================
+  // CONFIG (phone + WhatsApp)
+  // ======================
+  const PHONE_RAW = "+995900000000"; // <-- если нужно, замени на реальный номер
+  const PHONE_PRETTY = "+995 900 000 000"; // <-- красивый показ
+  const WHATSAPP_NUMBER = "995900000000";  // без плюса
+
+  // ======================
+  // PRICING (market GEL)
+  // ======================
+  const PRICING = {
+    apartment: {
+      standard: {
+        "studio": 90,
+        "1+1": 120,
+        "2+1+1wc": 160,
+        "2+1+2wc": 190,
+        "3+1+1wc": 200
+      },
+      deep: {
+        "studio": 130,
+        "1+1": 170,
+        "2+1+1wc": 220,
+        "2+1+2wc": 260,
+        "3+1+1wc": 290
+      }
+    },
+    office: {
+      standard: { perM2: 2.5 },
+      deep: { perM2: 3.2 }
+    },
+    postreno: {
+      standard: { perM2: 3.5 },
+      deep: { perM2: 4.3 }
+    }
+  };
+
+  const OPTIONS = [
+    { key:"windows", price:35, img:"windowcleaning.jpg", i18n:"opt.windows", subI18n:"optSub.windows" },
+    { key:"panorama", price:60, img:"floor-to-ceiling-window-cleaning.jpg", i18n:"opt.panorama", subI18n:"optSub.panorama" },
+    { key:"balcony", price:25, img:"balconycleaning.jpg", i18n:"opt.balcony", subI18n:"optSub.balcony" },
+    { key:"oven", price:30, img:"oven-cleaning-service.jpg", i18n:"opt.oven", subI18n:"optSub.oven" },
+    { key:"microwave", price:15, img:"microwave-inside-cleaning.jpg", i18n:"opt.microwave", subI18n:"optSub.microwave" },
+    { key:"closet", price:20, img:"closet.jpg", i18n:"opt.closet", subI18n:"optSub.closet" },
+  ];
+
+  // ======================
+  // i18n
+  // ======================
+  const translations = {
+    ru: {
+      from:"от",
+      header:{
+        subtitle:"Профессиональная уборка",
+        callnow:"Позвонить / WhatsApp"
+      },
+      hero:{
+        badge1:"Квартиры и офисы",
+        badge2:"Батуми • 7 дней в неделю",
+        badge3:"Оплата наличными / переводом",
+        title:"Уборка, после которой приятно жить",
+        desc:"Стандартная и генеральная уборка квартир, офисов и помещений. Прозрачная цена, чек-лист по комнатам и доп. услуги: окна, балкон, духовка, микроволновка и другое.",
+        cta1:"Рассчитать цену",
+        cta2:"Посмотреть пакеты",
+        pill1:"Собственный инвентарь",
+        pill2:"Аккуратно и без запаха химии",
+        pill3:"Подходит для семей с детьми",
+        m1t:"Быстрый выезд",
+        m1d:"Обычно в тот же день или на завтра",
+        m2t:"Честная цена",
+        m2d:"Счёт в калькуляторе до заказа"
+      },
+      packages:{
+        title:"Пакеты уборки",
+        desc:"Рыночные цены по Батуми (GEL). Итог зависит от состояния и выбранных доп. услуг — всё прозрачно в калькуляторе.",
+        studio:"Студия",
+        studioDesc:"Базовая чистота, санузел, кухня, полы, поверхности, вынос мусора.",
+        a11:"Квартира 1+1",
+        a11Desc:"Спальня + гостиная/кухня, санузел, пыль/поверхности, полы.",
+        a21wc:"Квартира 2+1 + WC",
+        a21wcDesc:"2 спальни + гостиная/кухня, 1 санузел. Идеально для регулярной уборки.",
+        a311wc:"Квартира 3+1 + 1 WC",
+        a311wcDesc:"Большая квартира: больше поверхностей и времени — лучше считать точно.",
+        office:"Клининг офисов",
+        officeDesc:"Поддерживающая и генеральная уборка офисов, кабинетов, клиник. Расчёт по площади.",
+        postreno:"Уборка после ремонта",
+        postrenoDesc:"Пыль после ремонта, следы строительных работ, тщательная детализация.",
+        calc:"Рассчитать"
+      },
+      included:{
+        title:"Что входит в уборку",
+        desc:"Визуальный чек-лист по комнатам. Переключайте комнаты и тип уборки (стандартная / генеральная).",
+        roomTitle:"Комната"
+      },
+      rooms:{
+        bedroom:"Спальня",
+        bathroom:"Ванная",
+        kitchen:"Кухня",
+        hallway:"Прихожая"
+      },
+      calc:{
+        title:"Калькулятор цены",
+        desc:"Выберите тип уборки, объект и доп. услуги. Цена считается автоматически (GEL).",
+        standard:"Стандартная",
+        deep:"Генеральная",
+        object:"Объект",
+        objApt:"Квартира",
+        objOffice:"Офис / клиника",
+        objPost:"После ремонта",
+        aptType:"Формат",
+        area:"Площадь, м²",
+        optionsTitle:"Дополнительные услуги",
+        optionsHint:"Отметьте то, что нужно сделать дополнительно. Каждая опция увеличивает итог.",
+        summaryTitle:"Итог",
+        note:"Цена ориентировочная. Финальная стоимость зависит от состояния и объёма работ. Мы подтвердим цену в сообщении/звонке.",
+        fastOrder:"Быстрый заказ",
+        fastDesc:"Нажмите, и мы уточним детали: адрес, удобное время и особенности объекта.",
+        whatsapp:"Написать в WhatsApp",
+        call:"Позвонить",
+        includedMini:"Что включено",
+        checklist:"Чек-лист"
+      },
+      apt:{
+        studio:"Студия",
+        a11:"1+1",
+        a21wc:"2+1 + WC",
+        a212wc:"2+1 + 2WC",
+        a311wc:"3+1 + 1WC"
+      },
+      opt:{
+        windows:"Мытьё окон",
+        panorama:"Окна в пол / панорама",
+        balcony:"Уборка балкона",
+        oven:"Мытьё духовки внутри",
+        microwave:"Мытьё микроволновки внутри",
+        closet:"Уборка в шкафу"
+      },
+      optSub:{
+        windows:"+ рамы и подоконники",
+        panorama:"больше стекла — больше времени",
+        balcony:"пол, перила, мусор",
+        oven:"обезжиривание и стекло",
+        microwave:"запахи и следы пищи",
+        closet:"полки и фасады"
+      },
+      extras:{
+        title:"Дополнительные услуги",
+        desc:"То, что часто просят отдельно. Все опции доступны в калькуляторе.",
+        ovenDesc:"Обезжиривание, решётки, стекло. Без повреждений покрытия.",
+        mwDesc:"Удаление запахов и следов пищи, аккуратно и быстро.",
+        winDesc:"Окна, рамы, подоконники. Для панорамных есть отдельная опция.",
+        panDesc:"Большие стеклянные поверхности — больше времени и осторожности.",
+        balDesc:"Пол, перила, пыль/мусор, зона хранения.",
+        closetDesc:"Аккуратно протираем полки и фасады, без перестановки личных вещей."
+      },
+      cta:{
+        title:"Готовы сделать чисто?",
+        desc:"Напишите или позвоните — мы уточним детали, время и подтвердим цену. Работаем по Батуми и рядом.",
+        btn1:"Рассчитать цену",
+        btn2:"WhatsApp",
+        btn3:"Позвонить"
+      },
+      footer:{ note:"Цены ориентировочные. Итог подтверждаем перед работой." }
+    },
+
+    en: {
+      from:"from",
+      header:{ subtitle:"Professional cleaning", callnow:"Call / WhatsApp" },
+      hero:{
+        badge1:"Apartments & offices",
+        badge2:"Batumi • 7 days a week",
+        badge3:"Cash / transfer",
+        title:"Cleaning that feels right",
+        desc:"Standard and deep cleaning for apartments, offices and premises. Transparent pricing, room checklist and add-ons: windows, balcony, oven, microwave and more.",
+        cta1:"Calculate price",
+        cta2:"View packages",
+        pill1:"Own equipment",
+        pill2:"Careful, no harsh smell",
+        pill3:"Family-friendly",
+        m1t:"Fast arrival",
+        m1d:"Often same day or next day",
+        m2t:"Fair pricing",
+        m2d:"Calculator estimate before booking"
+      },
+      packages:{
+        title:"Cleaning packages",
+        desc:"Market prices for Batumi (GEL). Final price depends on condition and add-ons — fully transparent in the calculator.",
+        studio:"Studio",
+        studioDesc:"Basic clean, bathroom, kitchen, floors, surfaces, trash out.",
+        a11:"Apartment 1+1",
+        a11Desc:"Bedroom + living/kitchen, bathroom, dust/surfaces, floors.",
+        a21wc:"Apartment 2+1 + WC",
+        a21wcDesc:"2 bedrooms + living/kitchen, 1 bathroom. Great for regular cleaning.",
+        a311wc:"Apartment 3+1 + 1 WC",
+        a311wcDesc:"Larger home: more surfaces and time — better to calculate precisely.",
+        office:"Office cleaning",
+        officeDesc:"Maintenance and deep cleaning for offices, cabinets, clinics. Price by area.",
+        postreno:"Post-renovation",
+        postrenoDesc:"Construction dust and traces, detailed cleaning.",
+        calc:"Calculate"
+      },
+      included:{
+        title:"What’s included",
+        desc:"Visual room checklist. Switch rooms and cleaning type (standard / deep).",
+        roomTitle:"Room"
+      },
+      rooms:{ bedroom:"Bedroom", bathroom:"Bathroom", kitchen:"Kitchen", hallway:"Hallway" },
+      calc:{
+        title:"Price calculator",
+        desc:"Choose cleaning type, object and add-ons. Price updates automatically (GEL).",
+        standard:"Standard",
+        deep:"Deep",
+        object:"Object",
+        objApt:"Apartment",
+        objOffice:"Office / clinic",
+        objPost:"Post-renovation",
+        aptType:"Format",
+        area:"Area, m²",
+        optionsTitle:"Add-on services",
+        optionsHint:"Select what you need additionally. Each option increases the total.",
+        summaryTitle:"Total",
+        note:"Approximate price. Final cost depends on condition and scope. We confirm via message/call.",
+        fastOrder:"Quick booking",
+        fastDesc:"Tap to confirm details: address, time and specifics.",
+        whatsapp:"Message on WhatsApp",
+        call:"Call",
+        includedMini:"Included",
+        checklist:"Checklist"
+      },
+      apt:{ studio:"Studio", a11:"1+1", a21wc:"2+1 + WC", a212wc:"2+1 + 2WC", a311wc:"3+1 + 1WC" },
+      opt:{
+        windows:"Window cleaning",
+        panorama:"Panoramic / floor-to-ceiling windows",
+        balcony:"Balcony cleaning",
+        oven:"Oven inside cleaning",
+        microwave:"Microwave inside cleaning",
+        closet:"Closet cleaning"
+      },
+      optSub:{
+        windows:"+ frames & sills",
+        panorama:"more glass, more time",
+        balcony:"floor, railings, trash",
+        oven:"degrease + glass",
+        microwave:"odors & stains",
+        closet:"shelves & fronts"
+      },
+      extras:{
+        title:"Extra services",
+        desc:"Most requested add-ons. All options are available in the calculator.",
+        ovenDesc:"Degreasing, racks, glass. Safe for surfaces.",
+        mwDesc:"Removes odors and food stains quickly and carefully.",
+        winDesc:"Windows, frames, sills. Panoramic option is separate.",
+        panDesc:"Large glass surfaces take more time and care.",
+        balDesc:"Floor, railings, dust/trash, storage zone.",
+        closetDesc:"Wipe shelves and fronts аккуратно (no moving personal items)."
+      },
+      cta:{
+        title:"Ready for a spotless home?",
+        desc:"Message or call — we’ll confirm details, time and price. Serving Batumi and nearby.",
+        btn1:"Calculate price",
+        btn2:"WhatsApp",
+        btn3:"Call"
+      },
+      footer:{ note:"Prices are indicative. Final quote is confirmed before work." }
+    },
+
+    ka: {
+      from:"დან",
+      header:{ subtitle:"პროფესიონალური დასუფთავება", callnow:"დარეკვა / WhatsApp" },
+      hero:{
+        badge1:"ბინები და ოფისები",
+        badge2:"ბათუმი • 7 დღე კვირაში",
+        badge3:"ნაღდი / გადარიცხვა",
+        title:"დასუფთავება, რომელიც იგრძნობა",
+        desc:"სტანდარტული და გენერალური დასუფთავება ბინებისთვის, ოფისებისა და სივრცეებისთვის. გამჭვირვალე ფასი, ოთახების ჩეკლისტი და დამატებითი სერვისები: ფანჯრები, აივანი, ღუმელი, მიკროტალღური და სხვა.",
+        cta1:"ფასის გამოთვლა",
+        cta2:"პაკეტები",
+        pill1:"საკუთარი ინვენტარი",
+        pill2:"ფრთხილად, მკვეთრი სუნის გარეშე",
+        pill3:"კარგია ოჯახებისთვის",
+        m1t:"სწრაფი მისვლა",
+        m1d:"ხშირად დღესვე ან ხვალ",
+        m2t:"სამართლიანი ფასი",
+        m2d:"კალკულატორი შეკვეთამდე"
+      },
+      packages:{
+        title:"დასუფთავების პაკეტები",
+        desc:"საბაზრო ფასები ბათუმში (GEL). საბოლოო ფასი დამოკიდებულია მდგომარეობასა და დამატებით სერვისებზე — ყველაფერი ჩანს კალკულატორში.",
+        studio:"სტუდიო",
+        studioDesc:"საბაზო წმენდა, აბაზანა, სამზარეულო, იატაკი, ზედაპირები, ნაგვის გატანა.",
+        a11:"ბინა 1+1",
+        a11Desc:"საძინებელი + მისაღები/სამზარეულო, აბაზანა, მტვერი/ზედაპირები, იატაკი.",
+        a21wc:"ბინა 2+1 + WC",
+        a21wcDesc:"2 საძინებელი + მისაღები/სამზარეულო, 1 სველი წერტილი.",
+        a311wc:"ბინა 3+1 + 1 WC",
+        a311wcDesc:"დიდი ბინა — ჯობს ზუსტად დაითვალოთ კალკულატორით.",
+        office:"ოფისების დასუფთავება",
+        officeDesc:"მხარდამჭერი და გენერალური წმენდა ოფისებისთვის/კლინიკებისთვის. ფასი ფართობის მიხედვით.",
+        postreno:"რემონტის შემდეგ",
+        postrenoDesc:"სამშენებლო მტვერი და კვალი, დეტალური წმენდა.",
+        calc:"გამოთვლა"
+      },
+      included:{
+        title:"რა შედის წმენდაში",
+        desc:"ვიზუალური ჩეკლისტი ოთახების მიხედვით. გადართეთ ოთახები და წმენდის ტიპი (სტანდარტული / გენერალური).",
+        roomTitle:"ოთახი"
+      },
+      rooms:{ bedroom:"საძინებელი", bathroom:"აბაზანა", kitchen:"სამზარეულო", hallway:"შემოსასვლელი" },
+      calc:{
+        title:"ფასის კალკულატორი",
+        desc:"აირჩიეთ წმენდის ტიპი, ობიექტი და დამატებითი სერვისები. ფასი ავტომატურად ითვლება (GEL).",
+        standard:"სტანდარტული",
+        deep:"გენერალური",
+        object:"ობიექტი",
+        objApt:"ბინა",
+        objOffice:"ოფისი / კლინიკა",
+        objPost:"რემონტის შემდეგ",
+        aptType:"ფორმატი",
+        area:"ფართი, მ²",
+        optionsTitle:"დამატებითი სერვისები",
+        optionsHint:"მონიშნეთ რაც დამატებით გჭირდებათ. თითოეული ზრდის ფასს.",
+        summaryTitle:"ჯამი",
+        note:"ფასი არის ორიენტირი. საბოლოო ღირებულებას ვადასტურებთ შეტყობინებით/ზარით.",
+        fastOrder:"სწრაფი შეკვეთა",
+        fastDesc:"დააჭირეთ და დავაზუსტებთ დეტალებს: მისამართი, დრო და მდგომარეობა.",
+        whatsapp:"WhatsApp შეტყობინება",
+        call:"დარეკვა",
+        includedMini:"შედის",
+        checklist:"ჩეკლისტი"
+      },
+      apt:{ studio:"სტუდიო", a11:"1+1", a21wc:"2+1 + WC", a212wc:"2+1 + 2WC", a311wc:"3+1 + 1WC" },
+      opt:{
+        windows:"ფანჯრების წმენდა",
+        panorama:"პანორამული / იატაკამდე ფანჯრები",
+        balcony:"აივნის დასუფთავება",
+        oven:"ღუმელის შიდა წმენდა",
+        microwave:"მიკროტალღურის შიდა წმენდა",
+        closet:"კარადის დასუფთავება"
+      },
+      optSub:{
+        windows:"+ ჩარჩოები და რაფები",
+        panorama:"მეტი მინა — მეტი დრო",
+        balcony:"იატაკი, მოაჯირები, ნაგავი",
+        oven:"ცხიმის მოცილება + მინა",
+        microwave:"სუნი და ლაქები",
+        closet:"თაროები და ფასადები"
+      },
+      extras:{
+        title:"დამატებითი სერვისები",
+        desc:"ხშირად მოთხოვნადი დამატებები. ყველა ვარიანტი არის კალკულატორში.",
+        ovenDesc:"ცხიმის მოცილება, ბადეები, მინა. უსაფრთხოდ ზედაპირებისთვის.",
+        mwDesc:"სუნისა და საკვების კვალის მოცილება სწრაფად და ფრთხილად.",
+        winDesc:"ფანჯრები, ჩარჩოები, რაფები. პანორამა ცალკეა.",
+        panDesc:"დიდი მინის ზედაპირები მოითხოვს მეტ დროს და სიფრთხილეს.",
+        balDesc:"იატაკი, მოაჯირები, მტვერი/ნაგავი.",
+        closetDesc:"თაროებისა და ფასადების გაწმენდა (პირადი ნივთების გადალაგების გარეშე)."
+      },
+      cta:{
+        title:"გსურთ სისუფთავე?",
+        desc:"მოგვწერეთ ან დაგვირეკეთ — დავაზუსტებთ დროს და ფასს. ვმუშაობთ ბათუმში და ახლოს.",
+        btn1:"ფასის გამოთვლა",
+        btn2:"WhatsApp",
+        btn3:"დარეკვა"
+      },
+      footer:{ note:"ფასები ორიენტირია. საბოლოოს ვადასტურებთ დაწყებამდე." }
+    }
+  };
+
+  // ======================
+  // ROOM VISUAL DATA (bubbles)
+  // ======================
+  const roomData = {
+    bedroom: {
+      image: "apartment-cleaning-service.jpg",
+      standard: [
+        { x: "18%", y: "22%", t_ru:"Протираем светильники (на уровне рук)", t_en:"Wipe lamps (hand level)", t_ka:"სანათების გაწმენდა (ხელის დონეზე)" },
+        { x: "28%", y: "46%", t_ru:"Протираем все поверхности", t_en:"Wipe all surfaces", t_ka:"ყველა ზედაპირის გაწმენდა" },
+        { x: "55%", y: "50%", t_ru:"Заправляем кровать", t_en:"Make the bed", t_ka:"საწოლის მოწესრიგება" },
+        { x: "70%", y: "62%", t_ru:"Пылесосим мягкую мебель", t_en:"Vacuum upholstery", t_ka:"რბილი ავეჯის მტვერსასრუტი" },
+        { x: "32%", y: "78%", t_ru:"Моем пол и плинтуса", t_en:"Wash floor & baseboards", t_ka:"იატაკისა და პლინტუსის გარეცხვა" }
+      ],
+      deep: [
+        { x: "16%", y: "20%", t_ru:"Моем стены (локально при необходимости)", t_en:"Spot-clean walls if needed", t_ka:"კედლების ლოკალური წმენდა საჭიროებისას" },
+        { x: "34%", y: "30%", t_ru:"Детально протираем светильники", t_en:"Detail clean lamps", t_ka:"სანათების დეტალური წმენდა" },
+        { x: "30%", y: "48%", t_ru:"Протираем все поверхности (включая верх)", t_en:"Wipe all surfaces (incl. top)", t_ka:"ყველა ზედაპირის წმენდა (ზედა ნაწილებიც)" },
+        { x: "68%", y: "44%", t_ru:"Стекла/зеркала (на уровне рук)", t_en:"Glass/mirrors (hand level)", t_ka:"მინა/სარკეები (ხელის დონეზე)" },
+        { x: "78%", y: "62%", t_ru:"Протираем подоконники и радиаторы", t_en:"Wipe sills & radiators", t_ka:"რაფებისა და რადიატორების გაწმენდა" },
+        { x: "34%", y: "78%", t_ru:"Моем пол и плинтуса", t_en:"Wash floor & baseboards", t_ka:"იატაკისა და პლინტუსის გარეცხვა" }
+      ]
+    },
+    bathroom: {
+      image: "apartment-cleaning-service.jpg",
+      standard: [
+        { x:"20%", y:"22%", t_ru:"Моем раковину", t_en:"Wash the sink", t_ka:"ნიჟარის გარეცხვა" },
+        { x:"46%", y:"40%", t_ru:"Протираем технику снаружи", t_en:"Wipe outside surfaces", t_ka:"ტექნიკის გარედან გაწმენდა" },
+        { x:"62%", y:"58%", t_ru:"Чистим и дезинфицируем унитаз", t_en:"Clean & disinfect toilet", t_ka:"ტუალეტის წმენდა და დეზინფექცია" },
+        { x:"78%", y:"30%", t_ru:"Протираем стеклянные поверхности", t_en:"Wipe glass surfaces", t_ka:"მინის ზედაპირების გაწმენდა" },
+        { x:"35%", y:"82%", t_ru:"Моем пол", t_en:"Wash floor", t_ka:"იატაკის გარეცხვა" }
+      ],
+      deep: [
+        { x:"20%", y:"22%", t_ru:"Тщательно вымоем сантехнику", t_en:"Deep clean plumbing", t_ka:"სანტექნიკის ღრმა წმენდა" },
+        { x:"48%", y:"50%", t_ru:"Удалим налёт и водный камень", t_en:"Remove limescale", t_ka:"კირისა და ნადების მოცილება" },
+        { x:"74%", y:"58%", t_ru:"Дезинфицируем унитаз/зону", t_en:"Disinfect toilet area", t_ka:"ტუალეტის ზონის დეზინფექცია" },
+        { x:"80%", y:"30%", t_ru:"Стекла и душ (детально)", t_en:"Glass & shower (detailed)", t_ka:"შხაპი/მინა (დეტალურად)" },
+        { x:"35%", y:"82%", t_ru:"Моем пол", t_en:"Wash floor", t_ka:"იატაკის გარეცხვა" }
+      ]
+    },
+    kitchen: {
+      image: "apartment-cleaning-service.jpg",
+      standard: [
+        { x:"22%", y:"22%", t_ru:"Протираем мебель снаружи", t_en:"Wipe cabinets outside", t_ka:"კარადების გარედან გაწმენდა" },
+        { x:"36%", y:"50%", t_ru:"Моем посуду и раковину", t_en:"Wash dishes & sink", t_ka:"ჭურჭლის/ნიჟარის გარეცხვა" },
+        { x:"62%", y:"26%", t_ru:"Моем все ручки", t_en:"Wipe all handles", t_ka:"ყველა სახელურის გაწმენდა" },
+        { x:"70%", y:"60%", t_ru:"Моем плиту", t_en:"Clean stove", t_ka:"ქურის წმენდა" },
+        { x:"45%", y:"82%", t_ru:"Моем пол и плинтуса", t_en:"Wash floor & baseboards", t_ka:"იატაკი და პლინტუსი" }
+      ],
+      deep: [
+        { x:"22%", y:"22%", t_ru:"Детально протираем фасады", t_en:"Detail wipe fronts", t_ka:"ფასადების დეტალური წმენდა" },
+        { x:"42%", y:"52%", t_ru:"Моем раковину/зону", t_en:"Deep clean sink area", t_ka:"ნიჟარის ზონის ღრმა წმენდა" },
+        { x:"62%", y:"26%", t_ru:"Моем ручки и выключатели", t_en:"Wipe handles & switches", t_ka:"სახელურები და ჩამრთველები" },
+        { x:"72%", y:"60%", t_ru:"Чистим плиту и фартук", t_en:"Clean stove & backsplash", t_ka:"ქურა და კედლის ფარი" },
+        { x:"45%", y:"82%", t_ru:"Моем пол и плинтуса", t_en:"Wash floor & baseboards", t_ka:"იატაკი და პლინტუსი" }
+      ]
+    },
+    hallway: {
+      image: "apartment-cleaning-service.jpg",
+      standard: [
+        { x:"18%", y:"28%", t_ru:"Протираем зеркала", t_en:"Wipe mirrors", t_ka:"სარკეების გაწმენდა" },
+        { x:"42%", y:"40%", t_ru:"Протираем все поверхности", t_en:"Wipe all surfaces", t_ka:"ყველა ზედაპირის გაწმენდა" },
+        { x:"30%", y:"62%", t_ru:"Пылесосим мягкую мебель", t_en:"Vacuum upholstery", t_ka:"რბილი ავეჯის მტვერსასრუტი" },
+        { x:"52%", y:"82%", t_ru:"Моем пол", t_en:"Wash floor", t_ka:"იატაკის გარეცხვა" }
+      ],
+      deep: [
+        { x:"20%", y:"26%", t_ru:"Убираем паутину", t_en:"Remove cobwebs", t_ka:"ობობის ქსელის მოცილება" },
+        { x:"42%", y:"42%", t_ru:"Протираем домофон/ручки", t_en:"Wipe intercom/handles", t_ka:"დომოფონი/სახელურები" },
+        { x:"72%", y:"62%", t_ru:"Протираем розетки/выключатели", t_en:"Wipe outlets/switches", t_ka:"როზეტები/ჩამრთველები" },
+        { x:"52%", y:"82%", t_ru:"Моем пол (в т.ч. труднодоступные места)", t_en:"Wash floor incl. corners", t_ka:"იატაკი (კუთხეები/ძნელი ადგილები)" }
+      ]
+    }
+  };
+
+  // ======================
+  // State
+  // ======================
+  let currentLang = "ru";
+  let calcType = "standard"; // standard | deep
+  let roomType = "standard"; // for visual checklist
+  let currentRoom = "bedroom";
+  let selectedOptions = new Set();
+
+  // ======================
+  // Helpers
+  // ======================
+  const $ = (sel) => document.querySelector(sel);
+  const $$ = (sel) => Array.from(document.querySelectorAll(sel));
+
+  function t(path){
+    // path like "hero.title"
+    const parts = path.split(".");
+    let obj = translations[currentLang];
+    for(const p of parts){
+      if(!obj) return path;
+      obj = obj[p];
+    }
+    return obj ?? path;
+  }
+
+  function setLang(lang){
+    currentLang = lang;
+
+    // toggle buttons
+    $$(".lang button").forEach(b=>{
+      b.classList.toggle("active", b.dataset.lang === lang);
+    });
+
+    // update all i18n nodes
+    $$("[data-i18n]").forEach(el=>{
+      const key = el.getAttribute("data-i18n");
+      const val = t(key);
+      if(typeof val === "string") el.textContent = val;
+    });
+
+    // also update summary
+    renderOptions();
+    updateCalculator();
+    renderRoomVisual();
+  }
+
+  function formatGEL(n){
+    return `${Math.round(n)} GEL`;
+  }
+
+  function calcBasePrice(){
+    const obj = $("#objSelect").value;
+    const isDeep = (calcType === "deep");
+
+    if(obj === "apt"){
+      const aptType = $("#aptSelect").value;
+      return PRICING.apartment[isDeep ? "deep" : "standard"][aptType] || 0;
+    }
+
+    const sqm = parseInt($("#sqmSelect").value || "40", 10);
+    if(obj === "office"){
+      const per = PRICING.office[isDeep ? "deep" : "standard"].perM2;
+      return sqm * per;
+    }
+    if(obj === "postreno"){
+      const per = PRICING.postreno[isDeep ? "deep" : "standard"].perM2;
+      return sqm * per;
+    }
+    return 0;
+  }
+
+  function calcOptionsPrice(){
+    let sum = 0;
+    for(const opt of OPTIONS){
+      if(selectedOptions.has(opt.key)) sum += opt.price;
+    }
+    return sum;
+  }
+
+  function getIncludedText(){
+    // short text for "What's included"
+    if(calcType === "standard"){
+      return currentLang === "ru"
+        ? "Поверхности на уровне рук, полы, санузел, кухня, вынос мусора, протирка видимой пыли."
+        : currentLang === "en"
+          ? "Hand-level surfaces, floors, bathroom, kitchen, trash out, visible dust wiped."
+          : "ხელის დონეზე ზედაპირები, იატაკი, აბაზანა, სამზარეულო, ნაგვის გატანა, ხილული მტვრის გაწმენდა.";
+    } else {
+      return currentLang === "ru"
+        ? "Более глубокая детализация: труднодоступные зоны, стекло/зеркала, следы налёта, больше времени на санузел и кухню."
+        : currentLang === "en"
+          ? "Deeper detailing: hard-to-reach areas, glass/mirrors, limescale traces, more time for bathroom and kitchen."
+          : "ღრმა დეტალიზაცია: ძნელად მისადგომი ადგილები, მინა/სარკეები, ნადები, მეტი დრო აბაზანასა და სამზარეულოზე.";
+    }
+  }
+
+  function getSummaryText(total){
+    const obj = $("#objSelect").value;
+    const typeLabel = calcType === "deep" ? t("calc.deep") : t("calc.standard");
+
+    if(obj === "apt"){
+      const aptLabelKey = $("#aptSelect").selectedOptions[0]?.getAttribute("data-i18n");
+      const aptLabel = aptLabelKey ? t(aptLabelKey) : $("#aptSelect").value;
+      return `${typeLabel}: ${aptLabel}. ${t("calc.optionsTitle")}: ${selectedOptions.size}.`;
+    } else {
+      const objLabelKey = $("#objSelect").selectedOptions[0]?.getAttribute("data-i18n");
+      const objLabel = objLabelKey ? t(objLabelKey) : $("#objSelect").value;
+      const sqm = $("#sqmSelect").value;
+      return `${typeLabel}: ${objLabel} (${sqm} м²). ${t("calc.optionsTitle")}: ${selectedOptions.size}.`;
+    }
+  }
+
+  function updateCalculator(){
+    // toggle apt vs sqm
+    const obj = $("#objSelect").value;
+    const aptField = $("#aptTypeField");
+    const sqmField = $("#sqmField");
+
+    if(obj === "apt"){
+      aptField.style.display = "";
+      sqmField.style.display = "none";
+    } else {
+      aptField.style.display = "none";
+      sqmField.style.display = "";
+    }
+
+    const base = calcBasePrice();
+    const ops = calcOptionsPrice();
+    const total = base + ops;
+
+    $("#totalPrice").textContent = formatGEL(total);
+    $("#pricePill").textContent = formatGEL(total);
+
+    const summary = getSummaryText(total);
+    $("#summaryText").textContent = summary;
+
+    $("#includedMiniText").textContent = getIncludedText();
+
+    const msg = buildWhatsAppMessage(total);
+    const waUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
+    $("#waBtn").href = waUrl;
+    $("#ctaWa").href = waUrl;
+
+    $("#callBtn").href = `tel:${PHONE_RAW}`;
+    $("#ctaCall").href = `tel:${PHONE_RAW}`;
+  }
+
+  function buildWhatsAppMessage(total){
+    const obj = $("#objSelect").value;
+    const typeLabel = calcType === "deep" ? t("calc.deep") : t("calc.standard");
+
+    let lines = [];
+    if(currentLang === "ru"){
+      lines.push("Здравствуйте! Хочу заказать уборку в Cleanex Batumi.");
+      lines.push(`Тип уборки: ${typeLabel}`);
+    } else if(currentLang === "en"){
+      lines.push("Hello! I'd like to book cleaning with Cleanex Batumi.");
+      lines.push(`Cleaning type: ${typeLabel}`);
+    } else {
+      lines.push("გამარჯობა! მინდა Cleanex Batumi-სთან დასუფთავების შეკვეთა.");
+      lines.push(`ტიპი: ${typeLabel}`);
+    }
+
+    if(obj === "apt"){
+      const aptLabelKey = $("#aptSelect").selectedOptions[0]?.getAttribute("data-i18n");
+      const aptLabel = aptLabelKey ? t(aptLabelKey) : $("#aptSelect").value;
+      lines.push(`${currentLang==="ru"?"Объект":"Object"}: ${currentLang==="ka"?"ბინა":"Apartment"} ${aptLabel}`);
+    } else {
+      const objLabelKey = $("#objSelect").selectedOptions[0]?.getAttribute("data-i18n");
+      const objLabel = objLabelKey ? t(objLabelKey) : $("#objSelect").value;
+      lines.push(`${currentLang==="ru"?"Объект":"Object"}: ${objLabel}`);
+      lines.push(`${currentLang==="ru"?"Площадь":"Area"}: ${$("#sqmSelect").value} м²`);
+    }
+
+    if(selectedOptions.size){
+      const names = OPTIONS
+        .filter(o=>selectedOptions.has(o.key))
+        .map(o=>t(o.i18n));
+      lines.push(`${currentLang==="ru"?"Доп. услуги":"Add-ons"}: ${names.join(", ")}`);
+    }
+
+    lines.push(`${currentLang==="ru"?"Ориентировочная цена":"Estimated price"}: ${formatGEL(total)}`);
+    lines.push(currentLang==="ru" ? "Удобное время: ____" : currentLang==="en" ? "Preferred time: ____" : "სასურველი დრო: ____");
+    return lines.join("\n");
+  }
+
+  function renderOptions(){
+    const box = $("#optionsBox");
+    box.innerHTML = "";
+
+    for(const opt of OPTIONS){
+      const checked = selectedOptions.has(opt.key);
+
+      const el = document.createElement("label");
+      el.className = "opt";
+      el.innerHTML = `
+        <input type="checkbox" ${checked ? "checked" : ""} data-opt="${opt.key}" />
+        <div>
+          <b>${t(opt.i18n)} <span style="opacity:.8;">(+${opt.price} GEL)</span></b>
+          <span>${t(opt.subI18n)}</span>
+        </div>
+      `;
+      box.appendChild(el);
+    }
+
+    // bind
+    box.querySelectorAll("input[type=checkbox]").forEach(cb=>{
+      cb.addEventListener("change", (e)=>{
+        const key = e.target.dataset.opt;
+        if(e.target.checked) selectedOptions.add(key);
+        else selectedOptions.delete(key);
+        updateCalculator();
+      });
+    });
+  }
+
+  function renderRoomVisual(){
+    const container = $("#roomImage");
+    container.innerHTML = "";
+
+    const d = roomData[currentRoom];
+    const img = document.createElement("img");
+    // Use your existing images. We pick "apartment-cleaning-service.jpg" as base background (clean and wide).
+    // You can later swap per-room backgrounds if you add specific room images.
+    img.src = d.image;
+    img.alt = "Room checklist visual";
+    container.appendChild(img);
+
+    const list = (roomType === "deep") ? d.deep : d.standard;
+    for(const item of list){
+      const bubble = document.createElement("div");
+      bubble.className = "bubble";
+      bubble.style.left = item.x;
+      bubble.style.top = item.y;
+
+      const text = currentLang === "ru" ? item.t_ru : (currentLang === "en" ? item.t_en : item.t_ka);
+      bubble.innerHTML = `<span class="b-dot"></span><span>${text}</span>`;
+      container.appendChild(bubble);
+    }
+  }
+
+  // ======================
+  // Init & Events
+  // ======================
+  function init(){
+    // year
+    $("#year").textContent = new Date().getFullYear();
+
+    // phone
+    $("#phoneText").textContent = PHONE_PRETTY;
+    $("#phoneLink").href = `tel:${PHONE_RAW}`;
+    $("#callBtn").href = `tel:${PHONE_RAW}`;
+    $("#ctaCall").href = `tel:${PHONE_RAW}`;
+
+    // language buttons
+    $$(".lang button").forEach(b=>{
+      b.addEventListener("click", ()=>{
+        setLang(b.dataset.lang);
+      });
+    });
+
+    // calculator tabs
+    $$('[data-calc-type]').forEach(btn=>{
+      btn.addEventListener("click", ()=>{
+        $$('[data-calc-type]').forEach(x=>x.classList.remove("active"));
+        btn.classList.add("active");
+        calcType = btn.dataset.calcType;
+        updateCalculator();
+        // keep visual tabs in sync for user feel
+        // (not forced; but it is pleasant)
+      });
+    });
+
+    // visual checklist cleaning type tabs
+    $$('[data-cleaning-type]').forEach(btn=>{
+      btn.addEventListener("click", ()=>{
+        $$('[data-cleaning-type]').forEach(x=>x.classList.remove("active"));
+        btn.classList.add("active");
+        roomType = btn.dataset.cleaningType;
+        renderRoomVisual();
+      });
+    });
+
+    // room tabs
+    $$('[data-room]').forEach(btn=>{
+      btn.addEventListener("click", ()=>{
+        $$('[data-room]').forEach(x=>x.classList.remove("active"));
+        btn.classList.add("active");
+        currentRoom = btn.dataset.room;
+        renderRoomVisual();
+      });
+    });
+
+    // selects
+    $("#objSelect").addEventListener("change", ()=>{
+      // reset options? keep them - user friendly
+      updateCalculator();
+    });
+    $("#aptSelect").addEventListener("change", updateCalculator);
+    $("#sqmSelect").addEventListener("change", updateCalculator);
+
+    // first render
+    renderOptions();
+    setLang("ru");
+    updateCalculator();
+    renderRoomVisual();
+
+    // CTA WA
+    $("#ctaWa").addEventListener("click", (e)=>{
+      if(!$("#ctaWa").href || $("#ctaWa").href === "#") e.preventDefault();
+    });
+  }
+
+  init();
+</script>
+</body>
+</html>
