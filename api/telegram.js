@@ -7,7 +7,19 @@ export default async function handler(req) {
     return new Response("Method not allowed", { status: 405 });
   }
 
-  const data = await req.json();
+  const BOT_TOKEN = process.env.TG_BOT_TOKEN;
+  const CHAT_ID = process.env.TG_CHAT_ID;
+
+  if (!BOT_TOKEN || !CHAT_ID) {
+    return new Response("Telegram ENV missing", { status: 500 });
+  }
+
+  let data;
+  try {
+    data = await req.json();
+  } catch {
+    return new Response("Invalid JSON", { status: 400 });
+  }
 
   const {
     name,
@@ -19,37 +31,37 @@ export default async function handler(req) {
     page
   } = data || {};
 
-  const text = `
-🧹 Новая заявка Cleanex Batumi
+  const message =
+`🧹 New Cleanex Lead
 
-👤 Имя: ${name || "-"}
-📞 Телефон: ${phone || "-"}
-📍 Адрес: ${address || "-"}
-🕒 Дата / время: ${time || "-"}
+👤 Name: ${name || "-"}
+📞 Phone: ${phone || "-"}
+📍 Address: ${address || "-"}
+🕒 Time: ${time || "-"}
 
-💰 Цена: ${price || "-"}
+💰 Price: ${price || "-"}
 
-💬 Комментарий:
+💬 Comment:
 ${comment || "-"}
 
-🌐 Страница:
-${page || "-"}
-`;
+🔗 Page:
+${page || "-"}`;
 
-  const tgRes = await fetch(
-    `https://api.telegram.org/bot${process.env.TG_BOT_TOKEN}/sendMessage`,
+  const tg = await fetch(
+    `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`,
     {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        chat_id: process.env.TG_CHAT_ID,
-        text
+        chat_id: CHAT_ID,
+        text: message
       })
     }
   );
 
-  if (!tgRes.ok) {
-    return new Response("Telegram error", { status: 500 });
+  if (!tg.ok) {
+    const err = await tg.text();
+    return new Response(err, { status: 500 });
   }
 
   return new Response(JSON.stringify({ ok: true }), { status: 200 });
