@@ -1922,6 +1922,47 @@
     return lines.join("\n");
   }
 
+  async function sendLeadToTelegram(){
+    // Server-side Telegram (Vercel /api/telegram). No tokens in frontend.
+    const name = ($("#leadName").value || "").trim();
+    const phone = ($("#leadPhone").value || "").trim();
+    const addr = ($("#leadAddr").value || "").trim();
+    const time = ($("#leadTime").value || "").trim();
+    const comment = ($("#leadComment").value || "").trim();
+
+    if(!phone){
+      showToast(t("toast.phoneReq"), "bad");
+      return;
+    }
+
+    const total = updateCalculator.lastTotal ?? 0;
+    const text = buildTelegramMessage(total);
+
+    try{
+      const res = await fetch("/api/telegram", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          text,
+          name,
+          phone,
+          address: addr,
+          time,
+          comment,
+          total,
+          lang: currentLang,
+          page: location.href
+        })
+      });
+
+      if(!res.ok) throw new Error("Telegram API route failed");
+      showToast(t("toast.tgOk"), "ok");
+    }catch(e){
+      console.error(e);
+      showToast(t("toast.tgFail"), "bad");
+    }
+  }
+
   function renderOptions(){
     const box = $("#optionsBox");
     box.innerHTML = "";
@@ -2016,8 +2057,8 @@
     $("#aptSelect").addEventListener("change", updateCalculator);
     $("#sqmSelect").addEventListener("change", updateCalculator);
 
-    $("#tgBtn").addEventListener("click", sendToTelegram);
-    $("#tgSticky").addEventListener("click", sendToTelegram);
+    $("#tgBtn").addEventListener("click", sendLeadToTelegram);
+    $("#tgSticky").addEventListener("click", sendLeadToTelegram);
 
     renderOptions();
     setLang("ru");
@@ -2028,40 +2069,6 @@
   init();
 </script>
 
-<script>
-/* Telegram via /api/telegram – safe */
-function collectLeadData() {
-  return {
-    name: document.getElementById("leadName")?.value || "",
-    phone: document.getElementById("leadPhone")?.value || "",
-    address: document.getElementById("leadAddr")?.value || "",
-    time: document.getElementById("leadTime")?.value || "",
-    comment: document.getElementById("leadComment")?.value || "",
-    price: document.getElementById("totalPrice")?.innerText || "",
-    page: location.href
-  };
-}
 
-async function sendToTelegram() {
-  const data = collectLeadData();
-  if (!data.phone) {
-    showToast("Укажите телефон", false);
-    return;
-  }
-
-  try {
-    const r = await fetch("/api/telegram", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data)
-    });
-    if (!r.ok) throw new Error();
-    showToast("Заявка отправлена", true);
-  } catch {
-    showToast("Ошибка отправки", false);
-  }
-}
-
-</script>
 </body>
 </html>
