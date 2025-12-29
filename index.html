@@ -1922,32 +1922,6 @@
     return lines.join("\n");
   }
 
-  async function sendLeadToTelegram(){
-    // Token/chat_id intentionally empty until you set them:
-    if(!TELEGRAM_BOT_TOKEN || !TELEGRAM_CHAT_ID){
-      showToast(t("toast.tgNoToken"), "bad");
-      return;
-    }
-
-    const total = updateCalculator.lastTotal ?? 0;
-    const text = buildTelegramMessage(total);
-
-    try{
-      const res = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ chat_id: TELEGRAM_CHAT_ID, text })
-      });
-
-      if(!res.ok) throw new Error("Telegram sendMessage failed");
-
-      showToast(t("toast.tgOk"), "ok");
-    }catch(e){
-      console.error(e);
-      showToast(t("toast.tgFail"), "bad");
-    }
-  }
-
   function renderOptions(){
     const box = $("#optionsBox");
     box.innerHTML = "";
@@ -2042,8 +2016,8 @@
     $("#aptSelect").addEventListener("change", updateCalculator);
     $("#sqmSelect").addEventListener("change", updateCalculator);
 
-    $("#tgBtn").addEventListener("click", sendLeadToTelegram);
-    $("#tgSticky").addEventListener("click", sendLeadToTelegram);
+    $("#tgBtn").addEventListener("click", sendToTelegram);
+    $("#tgSticky").addEventListener("click", sendToTelegram);
 
     renderOptions();
     setLang("ru");
@@ -2088,69 +2062,6 @@ async function sendToTelegram() {
   }
 }
 
-document.getElementById("tgBtn")?.addEventListener("click", sendToTelegram);
-document.getElementById("tgSticky")?.addEventListener("click", sendToTelegram);
-</script>
-
-
-<script>
-/* === Telegram override (SAFE, server-side) ===
-   This function intentionally OVERRIDES any previous sendLeadToTelegram
-   without touching calculators, languages, packages, or UI.
-*/
-window.sendLeadToTelegram = async function () {
-  try {
-    const name = document.getElementById("leadName")?.value || "";
-    const phone = document.getElementById("leadPhone")?.value || "";
-    const address = document.getElementById("leadAddr")?.value || "";
-    const time = document.getElementById("leadTime")?.value || "";
-    const comment = document.getElementById("leadComment")?.value || "";
-    const price = document.getElementById("totalPrice")?.innerText || "";
-
-    if (!phone) {
-      if (typeof showToast === "function") {
-        showToast("Укажите телефон", false);
-      }
-      return;
-    }
-
-    const res = await fetch("/api/telegram", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        name,
-        phone,
-        address,
-        time,
-        comment,
-        price,
-        page: location.href
-      })
-    });
-
-    if (!res.ok) throw new Error("Telegram API error");
-
-    if (typeof showToast === "function") {
-      showToast("Заявка отправлена", true);
-    }
-  } catch (e) {
-    console.error(e);
-    if (typeof showToast === "function") {
-      showToast("Ошибка отправки", false);
-    }
-  }
-};
-</script>
-
-
-<script>
-/* ===== Telegram FIX (alias only, no UI/i18n changes) =====
-   Buttons call sendLeadToTelegram(), while real sender is sendToTelegram().
-   This alias guarantees the correct function is executed.
-*/
-if (typeof sendToTelegram === "function") {
-  window.sendLeadToTelegram = sendToTelegram;
-}
 </script>
 </body>
 </html>
