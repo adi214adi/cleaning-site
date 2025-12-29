@@ -2142,5 +2142,16 @@ window.sendLeadToTelegram = async function () {
 };
 </script>
 
+
+<script>
+/* ===== Telegram FIX (alias only, no UI/i18n changes) =====
+   Buttons call sendLeadToTelegram(), while real sender is sendToTelegram().
+   This alias guarantees the correct function is executed.
+*/
+if (typeof sendToTelegram === "function") {
+  window.sendLeadToTelegram = sendToTelegram;
+}
+</script>
+
 </body>
 </html>
