@@ -1312,8 +1312,8 @@
   // ВАЖНО: НЕ хранить токен в публичном фронтенде.
   // Если всё же хочешь "быстро и без сервера", вставь сюда вручную (на свой риск).
   // Лучше: сделать /api/telegram на сервере и отправлять туда.
-  const TELEGRAM_CHAT_ID = "";     // <-- ВСТАВЬ chat_id СЮДА при необходимости
-  const TELEGRAM_BOT_TOKEN = "";   // <-- ВСТАВЬ token СЮДА при необходимости
+// TELEGRAM_CHAT_ID removed (server-side)     // <-- ВСТАВЬ chat_id СЮДА при необходимости
+// TELEGRAM_BOT_TOKEN removed (server-side)   // <-- ВСТАВЬ token СЮДА при необходимости
 
   // ======================
   // PRICING (market GEL)
@@ -1428,7 +1428,7 @@
       footer:{ note:"Цены ориентировочные. Итог подтверждаем перед работой." },
       toast:{
         tgOk:"Заявка отправлена в Telegram. Мы свяжемся с вами.",
-        tgNoToken:"Telegram не настроен. Вставьте TELEGRAM_BOT_TOKEN и TELEGRAM_CHAT_ID в коде (или сделайте серверный /api).",
+        tgNoToken:"",
         tgFail:"Не удалось отправить. Попробуйте WhatsApp или звонок."
       }
     },
@@ -2090,6 +2090,56 @@ async function sendToTelegram() {
 
 document.getElementById("tgBtn")?.addEventListener("click", sendToTelegram);
 document.getElementById("tgSticky")?.addEventListener("click", sendToTelegram);
+</script>
+
+
+<script>
+/* === Telegram override (SAFE, server-side) ===
+   This function intentionally OVERRIDES any previous sendLeadToTelegram
+   without touching calculators, languages, packages, or UI.
+*/
+window.sendLeadToTelegram = async function () {
+  try {
+    const name = document.getElementById("leadName")?.value || "";
+    const phone = document.getElementById("leadPhone")?.value || "";
+    const address = document.getElementById("leadAddr")?.value || "";
+    const time = document.getElementById("leadTime")?.value || "";
+    const comment = document.getElementById("leadComment")?.value || "";
+    const price = document.getElementById("totalPrice")?.innerText || "";
+
+    if (!phone) {
+      if (typeof showToast === "function") {
+        showToast("Укажите телефон", false);
+      }
+      return;
+    }
+
+    const res = await fetch("/api/telegram", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        name,
+        phone,
+        address,
+        time,
+        comment,
+        price,
+        page: location.href
+      })
+    });
+
+    if (!res.ok) throw new Error("Telegram API error");
+
+    if (typeof showToast === "function") {
+      showToast("Заявка отправлена", true);
+    }
+  } catch (e) {
+    console.error(e);
+    if (typeof showToast === "function") {
+      showToast("Ошибка отправки", false);
+    }
+  }
+};
 </script>
 
 </body>
