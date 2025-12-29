@@ -1,33 +1,56 @@
-export default async function handler(req, res) {
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
+export const config = {
+  runtime: "edge"
+};
+
+export default async function handler(req) {
+  if (req.method !== "POST") {
+    return new Response("Method not allowed", { status: 405 });
   }
 
-  const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
-  const TELEGRAM_CHAT_ID = process.env.TELEGRAM_CHAT_ID;
+  const data = await req.json();
 
-  if (!TELEGRAM_BOT_TOKEN || !TELEGRAM_CHAT_ID) {
-    return res.status(500).json({ error: 'Telegram env not configured' });
+  const {
+    name,
+    phone,
+    address,
+    time,
+    comment,
+    price,
+    page
+  } = data || {};
+
+  const text = `
+🧹 Новая заявка Cleanex Batumi
+
+👤 Имя: ${name || "-"}
+📞 Телефон: ${phone || "-"}
+📍 Адрес: ${address || "-"}
+🕒 Дата / время: ${time || "-"}
+
+💰 Цена: ${price || "-"}
+
+💬 Комментарий:
+${comment || "-"}
+
+🌐 Страница:
+${page || "-"}
+`;
+
+  const tgRes = await fetch(
+    `https://api.telegram.org/bot${process.env.TG_BOT_TOKEN}/sendMessage`,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        chat_id: process.env.TG_CHAT_ID,
+        text
+      })
+    }
+  );
+
+  if (!tgRes.ok) {
+    return new Response("Telegram error", { status: 500 });
   }
 
-  const text = req.body?.text || 'New lead';
-
-  try {
-    const response = await fetch(
-      `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`,
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          chat_id: TELEGRAM_CHAT_ID,
-          text,
-          parse_mode: 'HTML',
-        }),
-      }
-    );
-
-    res.status(200).json({ ok: true });
-  } catch (e) {
-    res.status(500).json({ error: 'Telegram send failed' });
-  }
+  return new Response(JSON.stringify({ ok: true }), { status: 200 });
 }
