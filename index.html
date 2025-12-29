@@ -2152,25 +2152,5 @@ if (typeof sendToTelegram === "function") {
   window.sendLeadToTelegram = sendToTelegram;
 }
 </script>
-<script>
-/* === HARD FIX: disable false "send error" === */
-(function () {
-  const _showToast = window.showToast;
-  if (typeof _showToast !== "function") return;
-
-  window.showToast = function (msg, ok) {
-    if (
-      typeof msg === "string" &&
-      msg.toLowerCase().includes("ошибка")
-    ) {
-      // ❌ полностью игнорируем ложную ошибку
-      console.warn("Send error suppressed:", msg);
-      return;
-    }
-    return _showToast.apply(this, arguments);
-  };
-})();
-</script>
-
 </body>
 </html>
