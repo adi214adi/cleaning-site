@@ -2055,53 +2055,41 @@
 </script>
 
 <script>
-  // ======================
-  // TELEGRAM SEND (SECURE via Vercel API)
-  // ======================
-  function collectLeadData() {
-    return {
-      name: document.getElementById("leadName")?.value || "",
-      phone: document.getElementById("leadPhone")?.value || "",
-      address: document.getElementById("leadAddr")?.value || "",
-      time: document.getElementById("leadTime")?.value || "",
-      comment: document.getElementById("leadComment")?.value || "",
-      price: document.getElementById("totalPrice")?.innerText || "",
-      page: window.location.href
-    };
+/* Telegram via /api/telegram – safe */
+function collectLeadData() {
+  return {
+    name: document.getElementById("leadName")?.value || "",
+    phone: document.getElementById("leadPhone")?.value || "",
+    address: document.getElementById("leadAddr")?.value || "",
+    time: document.getElementById("leadTime")?.value || "",
+    comment: document.getElementById("leadComment")?.value || "",
+    price: document.getElementById("totalPrice")?.innerText || "",
+    page: location.href
+  };
+}
+
+async function sendToTelegram() {
+  const data = collectLeadData();
+  if (!data.phone) {
+    showToast("Укажите телефон", false);
+    return;
   }
 
-  async function sendToTelegram() {
-    const data = collectLeadData();
-
-    if (!data.phone) {
-      showToast("Укажите телефон для связи", false);
-      return;
-    }
-
-    try {
-      const res = await fetch("/api/telegram", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data)
-      });
-
-      if (!res.ok) throw new Error();
-
-      showToast("Заявка отправлена. Мы свяжемся с вами.", true);
-    } catch {
-      showToast("Ошибка отправки. Попробуйте позже.", false);
-    }
+  try {
+    const r = await fetch("/api/telegram", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data)
+    });
+    if (!r.ok) throw new Error();
+    showToast("Заявка отправлена", true);
+  } catch {
+    showToast("Ошибка отправки", false);
   }
+}
 
-  document.getElementById("tgBtn")?.addEventListener("click", sendToTelegram);
-  document.getElementById("tgSticky")?.addEventListener("click", sendToTelegram);
-
-  function showToast(text, ok = true) {
-    const toast = document.getElementById("toast");
-    toast.textContent = text;
-    toast.className = "toast show " + (ok ? "ok" : "bad");
-    setTimeout(() => toast.classList.remove("show"), 3500);
-  }
+document.getElementById("tgBtn")?.addEventListener("click", sendToTelegram);
+document.getElementById("tgSticky")?.addEventListener("click", sendToTelegram);
 </script>
 
 </body>
